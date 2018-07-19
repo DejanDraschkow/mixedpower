@@ -23,7 +23,7 @@
 #' @return A modified mixed model
 #'
 #' @export
-fullpower <- function(model_emp, data_emp, subvar, fixed_effects,
+mixedpower <- function(model_emp, data_emp, subvar, fixed_effects,
                       critical_value, sample_sizes, n_sim,
                       databased = T, safeguard = T, rnorm = T){
 
