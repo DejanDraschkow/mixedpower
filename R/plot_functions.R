@@ -8,6 +8,8 @@
 #' @param layout A matrix specifying the layout. If present, 'cols' is ignored
 #'
 #' @export
+#'
+
 
 multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 
