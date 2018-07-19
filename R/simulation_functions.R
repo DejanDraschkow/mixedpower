@@ -1,25 +1,30 @@
-# simulation stuff
 
 
-
-#-------------------------------------------------------------------------------------------------------#
-# FULL POWER PROCESS
-#### mixed_power
-
-#' Function to prepare a mixed model with varied fixed effect estimantes
+#' Function thatr runs the whole mixedpower power process
 #'
-#' \code{prepare_rnorm_model()} changes the fixed effect estimates of the
-#' specified model. It randomly selects "new" fixed effect estimates out of
-#' a normal distribution around the "old" estimates. Non significant effects
-#' in the given model are ignored and no rnorm-value is computet for them.
+#' \code{mixedpower()} combines all three power options (databased, safeguard,
+#' rnorm). It runs them all by default and returns a data frame with results
+#' for all three options.
 #'
-#' @param model mixed model of interest
-#' @param data_emp pilot data that fits the mixed model of interest
-#' @param subvar name of the variable that contains the subject´s number
+#' @param model_emp lme4 model: mixed model of interest
+#' @param data_emp data frame: pilot data that fits the mixed model of interest
+#' @param subvar charackter element: name of the variable that contains the
+#' subject´s number
 #' in data_emp
-#' @param critical_value z/t value to test if a given fixed effect
+#' @param fixed_effects vector of character elements: names of variables that
+#'  are used as fixed effects in
+#' model emp
+#' @param critical_value integer: z/t value to test if a given fixed effect
 #' is significant
-#'
+#' @param sampe_sizes vector of integers: sample sizes you want to test power
+#'of
+#' @param n_sim integer: number of simulations to run
+#' @param databased logical value: indicates whether databased power simulation
+#' shoul be run
+#' @param safeguard logical value: indicates whether safeguard power simulation
+#' shoul be run
+#' @param rnorm logical value: indicates whether rnorm power simulation
+#' shoul be run
 #' @return A modified mixed model
 #'
 #' @export
@@ -90,10 +95,36 @@ mixedpower <- function(model_emp, data_emp, subvar, fixed_effects,
 
 } # end function
 
-#-------------------------------------------------------------------------------------------------------#
-# POWER SIMULATION
+#-----------------------------------------------------------------------------#
 
-# do the whole power analysis process
+
+
+#' Function that runs the power simulation
+#'
+#' \code{power_simulation()} runs the actual simulation process for either the
+#' databased, safeguard or rnorm power option. Returns a data frame with results
+#' for all fixed effects and all tested sample sizes.
+#'
+#' @param model_emp lme4 model: mixed model of interest
+#' @param data_emp data frame: pilot data that fits the mixed model of interest
+#' @param subvar charackter element: name of the variable that contains the
+#' subject´s number
+#' in data_emp
+#' @param fixed_effects vector of character elements: names of variables that
+#'  are used as fixed effects in
+#' model emp
+#' @param critical_value integer: z/t value to test if a given fixed effect
+#' is significant
+#' @param sampe_sizes vector of integers: sample sizes you want to test power
+#'of
+#' @param n_sim integer: number of simulations to run
+#' @param safeguard logical value: indicates whether safeguard power simulation
+#' shoul be run
+#' @param rnorm logical value: indicates whether rnorm power simulation
+#' shoul be run
+#' @return A modified mixed model
+#'
+#' @export
 power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
                              critical_value, sample_sizes, n_sim,
                              safeguard = F, rnorm = F){
@@ -114,7 +145,9 @@ power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
   # IF SAFEGUARD POWER:
   if (safeguard == T){
     print("Hey its safeguard")
-    model_for_simulation <- prepare_safeguard_model(model_emp,confidence_level, critical_value)
+    model_for_simulation <- prepare_safeguard_model(model_emp,
+                                                    confidence_level,
+                                                    critical_value)
   } else {
     print("no safeguard")
     model_for_simulation <- model_emp
@@ -139,7 +172,8 @@ power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
   row_names <- row.names(summary(model_emp)$coefficients)[-1]
 
   # empty data frame
-  power_values_all <- data.frame(matrix(ncol = n_col, nrow = n_row), row.names = row_names)
+  power_values_all <- data.frame(matrix(ncol = n_col, nrow = n_row),
+                                 row.names = row_names)
   # name stuff (header)
   names(power_values_all) <- sample_sizes
 
@@ -154,21 +188,26 @@ power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
     index_n <- index_n + 1
 
     # prepare simulation for current n
-    ## 1. create object that can store simulations --> data frame with effects as collumns and nsim rows
+    ## 1. create object that can store simulations
+    #--> data frame with effects as collumns and nsim rows
     #store_simulations <- data.frame(matrix(ncol = n_row, nrow = n_sim))
     #names(store_simulations) <- names(fixef(model_emp)[-1])
 
     # repeat simulation n_sim times
     # store outcome in store_simulations
     # --> this is a list of vectors!!
-    store_simulations <- foreach::foreach(icount(n_sim), .combine = "cbind", .export=ls(envir=globalenv()),
-                                 .packages = c("lme4")) %dopar% {
+    store_simulations <- foreach::foreach(icount(n_sim), .combine = "cbind",
+                                          .export=ls(envir=globalenv()),
+                                          .packages = c("lme4")) %dopar% {
+
 
                                    #------------------------------------#
                                    #------------------------------------#
                                    # IF RNORM MODEL:
                                    if (rnorm == T){
-                                     model_for_simulation <- prepare_rnorm_model(model_emp, data_emp, subvar)
+                                     model_for_simulation <- prepare_rnorm_model(model_emp,
+                                                                                 data_emp,
+                                                                                 subvar)
                                    }
                                    #------------------------------------#
                                    #------------------------------------#
@@ -178,18 +217,21 @@ power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
                                    simulated_data <- simulateSamplesize(n_want = n,
                                                                         data_emp = data_emp,
                                                                         model_emp = model_for_simulation,
-                                                                        depvar = depvar,
                                                                         subvar = subvar)
 
                                    #------------------------------------#
                                    #2. code contrasts for simulated data set
-                                   final_dataset <- reset_contrasts(simulated_data, data_emp, model_emp, fixed_effects)
+                                   final_dataset <- reset_contrasts(simulated_data,
+                                                                    data_emp,
+                                                                    model_emp,
+                                                                    fixed_effects)
 
 
                                    #-------------------------------------#
                                    # 3. refit model_emp to current data set (final_dataset)
                                    # --> update model emp with new data set
-                                   model_sim <- update(model_emp, data = final_dataset)
+                                   model_sim <- update(model_emp,
+                                                       data = final_dataset)
 
                                    #-------------------------------------#
                                    # 4. analyze final_data set and store result
@@ -199,7 +241,8 @@ power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
                                    # check significance
                                    # --> check_significance() returns 1 if effect is significant, 0 if not
                                    # --> store significance in specified vector
-                                   to.store_simulations <- check_significance(model_sim, critical_value)
+                                   to.store_simulations <- check_significance(model_sim,
+                                                                              critical_value)
 
                                  }# end for loop (n_sim)
 
@@ -208,7 +251,8 @@ power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
     ## compute power!
     # margin = 2 --> apply FUN on columns
     # --> vector withs names
-    power_values_n <- apply(store_simulations, MARGIN = 1, FUN = mean, na.rm = T)
+    power_values_n <- apply(store_simulations, MARGIN = 1,
+                            FUN = mean, na.rm = T)
 
     # -------------------------------------#
     # 6. store power value
@@ -229,11 +273,31 @@ power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
 
 
 
+#-----------------------------------------------------------------------------#
 
-# simulate new data sets
-simulateSamplesize <- function(n_want, data_emp, model_emp, depvar, subvar){
+
+#' Simulate a new data set
+#'
+#' \code{simulateSamplesize()} builds a new data set with a specified number of
+#' subjects. It uses the \code{lme4::simulate()} function to create new response
+#' values based on the mixed model fittet to the pilot data.
+#'
+#' @param n_want integer: how many subjects should the new data set include?
+#' @param data_emp data frame: pilot data that fits the mixed model of interest
+#' @param model_emp lme4 model: mixed model of interest
+#' @param subvar character element: name of the varaible containing the subject
+#' number in data_emp
+#'
+#' @return A modified mixed model
+#'
+#' @export
+
+simulateSamplesize <- function(n_want, data_emp, model_emp, subvar){
   # ---------------------------------------------------------------------------- #
   # STEP 1: set relevant paramaters
+
+  # whats the dependent variable?
+  depvar <- get_depvar(model_emp)
 
   # how many subjects are in the pilot data? --> n_now
   n_now <- get_n(data_emp, subvar)

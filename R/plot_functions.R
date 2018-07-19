@@ -1,6 +1,7 @@
 #' Multiple plot function from Cookbook-R
 #'
-#' \code{multiplot(..., plotlist=NULL, file, cols=1, layout=NULL)} puts multiple graphs on one page.
+#' \code{multiplot(..., plotlist=NULL, file, cols=1, layout=NULL)} puts
+#'  multiple graphs on one page.
 #'
 #' @param ... ggplot objects passed to the function
 #' @param plotlist List of ggplot objects that can be passed to the function
@@ -47,7 +48,6 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
   }
 }
 
-##### plot function #####
 
 #' Multiple plot function to plot the mmpower output
 #'
