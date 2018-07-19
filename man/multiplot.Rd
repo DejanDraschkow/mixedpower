@@ -16,5 +16,6 @@ multiplot(..., plotlist = NULL, file, cols = 1, layout = NULL)
 \item{layout}{A matrix specifying the layout. If present, 'cols' is ignored}
 }
 \description{
-\code{multiplot(..., plotlist=NULL, file, cols=1, layout=NULL)} puts multiple graphs on one page.
+\code{multiplot(..., plotlist=NULL, file, cols=1, layout=NULL)} puts
+ multiple graphs on one page.
 }
