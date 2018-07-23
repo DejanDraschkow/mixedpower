@@ -1,5 +1,3 @@
-
-
 #' Function thatr runs the whole mixedpower power process
 #'
 #' \code{mixedpower()} combines all three power options (databased, safeguard,
