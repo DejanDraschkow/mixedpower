@@ -205,7 +205,8 @@ power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
                                    if (rnorm == T){
                                      model_for_simulation <- prepare_rnorm_model(model_emp,
                                                                                  data_emp,
-                                                                                 subvar)
+                                                                                 subvar,
+                                                                                 critical_value)
                                    }
                                    #------------------------------------#
                                    #------------------------------------#
