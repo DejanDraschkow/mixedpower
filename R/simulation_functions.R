@@ -314,7 +314,7 @@ simulateSamplesize <- function(n_want, data_emp, model_emp, subvar){
   for (i in 1:mult_factor){
 
     # simuate new data --> variable of interest
-    new_subject_data <- lme4::simulate(model_emp, nsim = 1)
+    new_subject_data <- lme4::simulate.merMod(model_emp, nsim = 1)
 
     ###--- create new data set: rename vp variable and replace variable of interest with simulated data--- ##
     # copy old data set
