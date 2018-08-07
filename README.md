@@ -21,7 +21,7 @@ For a step-by-step tutorial on how to use this package, download the _mixedpower
 Everything you need to do and know to run your first mixedpower poweranalysis is explained in there.
 
 
-
+##
 This library is citable under:
 
 Kumle, L., Võ, M. L-H.., & Draschkow, D. (2018). Mixedpower: a library for estimating simulation-based power for mixed models in R. https://doi.org/10.5281/zenodo.1341047
