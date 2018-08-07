@@ -22,6 +22,9 @@ Everything you need to do and know to run your first mixedpower poweranalysis is
 
 
 
+This library is citable under:
+
+Kumle, L., Võ, M. L-H.., & Draschkow, D. (2018). Mixedpower: a library for estimating simulation-based power for mixed models in R. https://doi.org/10.5281/zenodo.1341047
 
 
 :hatched_chick:
