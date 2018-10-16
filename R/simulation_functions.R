@@ -258,6 +258,7 @@ power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
     ## store it!
     column_name <- as.character(n)
     power_values_all[column_name] <- power_values_n
+    row.names(power_values_all) <- c() # remove row names. double information
 
   } # end for loop (samplesizes)
 
@@ -266,7 +267,7 @@ power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
 
   # return data based power values
   power_values_all
-
+  
 
 } # end power simulation function
 
