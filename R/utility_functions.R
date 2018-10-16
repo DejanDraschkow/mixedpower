@@ -12,7 +12,7 @@
 #'
 #' @param model mixed model of interest
 #' @param data_emp pilot data that fits the mixed model of interest
-#' @param subvar name of the variable that contains the subject´s number
+#' @param subvar name of the variable that contains the subject??s number
 #' in data_emp
 #' @param critical_value z/t value to test if a given fixed effect
 #' is significant
@@ -284,11 +284,11 @@ get_n <- function(data, subvar){
   # --> first: check if subvar is numeric and convert to numeric if not
   # --> max() needs numeric vector
   # 1. check if subvar is numeric
-  if( is.numeric(data[[subvar]]) == F) {
+  #if( is.numeric(data[[subvar]]) == F) {
 
     # 2. convert  to numeric
-    data[[subvar]] <- as.numeric(as.character(data[[subvar]]))
-  } # end if
+   # data[[subvar]] <- as.numeric(as.character(data[[subvar]]))
+  #} # end if
 
   # --> now get n_now ;)
   n <- length(unique(data[[subvar]], na.rm = T))
