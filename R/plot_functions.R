@@ -88,7 +88,7 @@ multiplotPower <- function(output_data, ppi = 300){
                         select = c(mode, sample_size,value))
 
 
-    p <- ggplot2::ggplot(plot_data, aes(x = sample_size, y = value, color=mode, group = mode)) + # basic graph
+    p <- ggplot2::ggplot(plot_data, ggplot2::aes(x = sample_size, y = value, color=mode, group = mode)) + # basic graph
       ggplot2::geom_point() + # add points
       ggplot2::geom_smooth(method = "lm", formula = y ~ poly(x,2) , se =F)+
       ggplot2::xlab("sample size") + ggplot2::ylab("power") +  # change name of x and y axes
