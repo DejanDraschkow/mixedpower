@@ -194,6 +194,10 @@ power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
     # repeat simulation n_sim times
     # store outcome in store_simulations
     # --> this is a list of vectors!!
+    
+    # magic cheating
+    `%dopar%` <- foreach::`%dopar%`
+    #okay now continue
     store_simulations <- foreach::foreach(icount(n_sim), .combine = "cbind",
                                           .export=ls(envir=globalenv()),
                                           .packages = c("lme4")) %dopar% {
@@ -258,7 +262,6 @@ power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
     ## store it!
     column_name <- as.character(n)
     power_values_all[column_name] <- power_values_n
-    row.names(power_values_all) <- c() # remove row names. double information
 
   } # end for loop (samplesizes)
 
