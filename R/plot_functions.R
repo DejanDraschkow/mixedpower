@@ -92,9 +92,9 @@ multiplotPower <- function(output_data, ppi = 300){
       ggplot2::geom_point() + # add points
       ggplot2::geom_smooth(method = "lm", formula = y ~ poly(x,2) , se =F)+
       ggplot2::xlab("sample size") + ggplot2::ylab("power") +  # change name of x and y axes
-      ggplot2::theme(axis.line = element_line(color = "black"), # axis line
-            panel.background = element_rect(fill = "white"), # background
-            legend.title = element_blank()) + # remove legend title
+      ggplot2::theme(axis.line = ggplot2::element_line(color = "black"), # axis line
+            panel.background = ggplot2::element_rect(fill = "white"), # background
+            legend.title = ggplot2::element_blank()) + # remove legend title
       #labs(linetype = "condition", color = "condition") +
       #scale_color_viridis(discrete = T, option = "inferno")  +  # color
       ggplot2::scale_color_manual(values = cbPalette) +
