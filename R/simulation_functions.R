@@ -27,7 +27,7 @@
 #'
 #' @export
 mixedpower <- function(model_emp, data_emp, subvar, fixed_effects,
-                      critical_value, sample_sizes, n_sim, confidence_level,
+                      sample_sizes, n_sim, critical_value, confidence_level,
                       databased = T, safeguard = T, rnorm = T){
 
   #### This function combines the whole power simulation process ###
