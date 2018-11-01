@@ -109,10 +109,17 @@ multiplotPower <- function(output_data, ppi = 300){
 
   # ------------------------------------------#
   # 3. create multiplot
+  # adjust plot dimensions according to the number of effects in the data
+  effect_num = length(fixeffects)
+  ncol = 3
+  if (effect_num%%3 == 0) {
+    nrow = effect_num/3
+  } else {
+    nrow = floor(effect_num/3) + 1
+  }
   png("multiplot_powerSimulation.png", width=12*ppi, height=8*ppi, bg = "transparent", res=ppi)
-
-  struct <- matrix(seq(1,9), ncol = 3, nrow = 3)
-  multiplot(plotlist = all_plots, layout = struct)
+  struct <- matrix(seq(1,nrow*ncol), ncol = ncol, nrow = nrow)
+  return(multiplot(plotlist = all_plots, layout = struct))
   dev.off()
 
 } # end function
