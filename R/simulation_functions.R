@@ -12,11 +12,13 @@
 #' @param fixed_effects vector of character elements: names of variables that
 #'  are used as fixed effects in
 #' model emp
+#' @param n_sim integer: number of simulations to run
+#' @param sampe_sizes vector of integers: sample sizes you want to test power
+#' of
 #' @param critical_value integer: z/t value to test if a given fixed effect
 #' is significant
-#' @param sampe_sizes vector of integers: sample sizes you want to test power
-#'of
-#' @param n_sim integer: number of simulations to run
+#' @param confidence_level float: value between 0-1 indicating the width of the
+#' confidence interval used for the safeguard option
 #' @param databased logical value: indicates whether databased power simulation
 #' shoul be run
 #' @param safeguard logical value: indicates whether safeguard power simulation
@@ -142,12 +144,10 @@ power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
   #------------------------------------#
   # IF SAFEGUARD POWER:
   if (safeguard == T){
-    print("Hey its safeguard")
     model_for_simulation <- prepare_safeguard_model(model_emp,
                                                     confidence_level,
                                                     critical_value)
   } else {
-    print("no safeguard")
     model_for_simulation <- model_emp
   }
 
@@ -181,6 +181,7 @@ power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
   for (n in sample_sizes){
 
     # inform which sample sizes we are computing power right now
+    print("Estimating power for sample size:")
     print(n)
 
     index_n <- index_n + 1
@@ -196,7 +197,7 @@ power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
     # --> this is a list of vectors!!
     store_simulations <- foreach::foreach(icount(n_sim), .combine = "cbind",
                                           .export=ls(envir=globalenv()),
-                                          .packages = c("lme4")) %dopar% {
+                                          .packages = c("lme4")) foreach::`%dopar%` {
 
 
                                    #------------------------------------#
