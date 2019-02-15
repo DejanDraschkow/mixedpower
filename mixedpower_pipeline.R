@@ -114,9 +114,9 @@ fixed_effects <- c(">> fixed effect 1 <<", ">> fixed effect 2 <<", "...")
 # --> the output (plots, data frame with results) will be saved in your 
 # powersimulation folder
 
-power_output <- mixedpower(model_emp, data_emp, subvar, fixed_effects,
-                   critical_value, sample_sizes, n_sim = 1000,
-                   databased = T, safeguard = T, rnorm = T)
+power_output <- mixedpower(model_emp=model_emp, data_emp=data_emp, subvar=subvar, 
+                           fixed_effects=fixed_effects,critical_value=critical_value, 
+                           sample_sizes=sample_sizes,confidence_level=confidence_level, n_sim = 1000)
 
 
 multiplotPower(power_output)

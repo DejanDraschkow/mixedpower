@@ -7,7 +7,7 @@
 #' @param model_emp lme4 model: mixed model of interest
 #' @param data_emp data frame: pilot data that fits the mixed model of interest
 #' @param subvar charackter element: name of the variable that contains the
-#' subject´s number
+#' subject??s number
 #' in data_emp
 #' @param fixed_effects vector of character elements: names of variables that
 #'  are used as fixed effects in
@@ -29,8 +29,8 @@
 #'
 #' @export
 mixedpower <- function(model_emp, data_emp, subvar, fixed_effects,
-                      critical_value, sample_sizes, n_sim,
-                      databased = T, safeguard = T, rnorm = T){
+                      sample_sizes, n_sim, critical_value, confidence_level,
+                      databased = T, safeguard = T, rnorm = F){
 
   #### This function combines the whole power simulation process ###
 
@@ -42,7 +42,7 @@ mixedpower <- function(model_emp, data_emp, subvar, fixed_effects,
   # 1. databased
   if (databased == T){
     databased_power_values <- power_simulation(model_emp, data_emp, subvar, fixed_effects,
-                                               critical_value, sample_sizes, n_sim,
+                                               critical_value, sample_sizes, n_sim, confidence_level,
                                                safeguard = F, rnorm = F)
 
     # store output
@@ -57,7 +57,7 @@ mixedpower <- function(model_emp, data_emp, subvar, fixed_effects,
   # 2. safeguard
   if (safeguard == T){
     safeguard_power_values <- power_simulation(model_emp, data_emp, subvar, fixed_effects,
-                                               critical_value, sample_sizes, n_sim,
+                                               critical_value, sample_sizes, n_sim, confidence_level,
                                                safeguard = T, rnorm = F)
 
     safeguard_power_values["mode"] <- "safeguard"
@@ -71,7 +71,7 @@ mixedpower <- function(model_emp, data_emp, subvar, fixed_effects,
   # 3. rnorm
   if (rnorm == T){
     rnorm_power_values <- power_simulation(model_emp, data_emp, subvar, fixed_effects,
-                                           critical_value, sample_sizes, n_sim,
+                                           critical_value, sample_sizes, n_sim, confidence_level,
                                            safeguard = F, rnorm = T)
 
     rnorm_power_values["mode"] <- "rnorm"
@@ -108,7 +108,7 @@ mixedpower <- function(model_emp, data_emp, subvar, fixed_effects,
 #' @param model_emp lme4 model: mixed model of interest
 #' @param data_emp data frame: pilot data that fits the mixed model of interest
 #' @param subvar charackter element: name of the variable that contains the
-#' subject´s number
+#' subject??s number
 #' in data_emp
 #' @param fixed_effects vector of character elements: names of variables that
 #'  are used as fixed effects in
@@ -126,7 +126,7 @@ mixedpower <- function(model_emp, data_emp, subvar, fixed_effects,
 #'
 #' @export
 power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
-                             critical_value, sample_sizes, n_sim,
+                             critical_value, sample_sizes, n_sim, confidence_level,
                              safeguard = F, rnorm = F){
 
 
@@ -195,7 +195,11 @@ power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
     # repeat simulation n_sim times
     # store outcome in store_simulations
     # --> this is a list of vectors!!
-    store_simulations <- foreach::foreach(icount(n_sim), .combine = "cbind",
+    
+    # magic cheating
+    `%dopar%` <- foreach::`%dopar%`
+    #okay now continue
+    store_simulations <- foreach::foreach(iterators::icount(n_sim), .combine = "cbind",
                                           .export=ls(envir=globalenv()),
                                           .packages = c("lme4")) foreach::`%dopar%` {
 
@@ -267,7 +271,7 @@ power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
 
   # return data based power values
   power_values_all
-
+  
 
 } # end power simulation function
 

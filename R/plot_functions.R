@@ -88,13 +88,13 @@ multiplotPower <- function(output_data, ppi = 300){
                         select = c(mode, sample_size,value))
 
 
-    p <- ggplot2::ggplot(plot_data, aes(x = sample_size, y = value, color=mode, group = mode)) + # basic graph
+    p <- ggplot2::ggplot(plot_data, ggplot2::aes(x = sample_size, y = value, color=mode, group = mode)) + # basic graph
       ggplot2::geom_point() + # add points
-      ggplot2::geom_smooth(method = "lm", formula = y ~ poly(x,2) , se =F)+
+      ggplot2::geom_line()+
       ggplot2::xlab("sample size") + ggplot2::ylab("power") +  # change name of x and y axes
-      ggplot2::theme(axis.line = element_line(color = "black"), # axis line
-            panel.background = element_rect(fill = "white"), # background
-            legend.title = element_blank()) + # remove legend title
+      ggplot2::theme(axis.line = ggplot2::element_line(color = "black"), # axis line
+            panel.background = ggplot2::element_rect(fill = "white"), # background
+            legend.title = ggplot2::element_blank()) + # remove legend title
       #labs(linetype = "condition", color = "condition") +
       #scale_color_viridis(discrete = T, option = "inferno")  +  # color
       ggplot2::scale_color_manual(values = cbPalette) +
@@ -109,10 +109,17 @@ multiplotPower <- function(output_data, ppi = 300){
 
   # ------------------------------------------#
   # 3. create multiplot
-  png("multiplot_powerSimulation.png", width=12*ppi, height=8*ppi, bg = "transparent", res=ppi)
-
-  struct <- matrix(seq(1,9), ncol = 3, nrow = 3)
-  multiplot(plotlist = all_plots, layout = struct)
-  dev.off()
+  # adjust plot dimensions according to the number of effects in the data
+  effect_num = length(fixeffects)
+  ncol = 3
+  if (effect_num%%3 == 0) {
+    nrow = effect_num/3
+  } else {
+    nrow = floor(effect_num/3) + 1
+  }
+  #png("multiplot_powerSimulation.png", width=12*ppi, height=8*ppi, bg = "transparent", res=ppi)
+  struct <- matrix(seq(1,nrow*ncol), ncol = ncol, nrow = nrow)
+  return(multiplot(plotlist = all_plots, layout = struct))
+  #dev.off()
 
 } # end function
