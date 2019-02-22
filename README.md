@@ -1,6 +1,6 @@
 # mixedpower
 
-A package for pilot data based simulations for estimationg power in linear mixed models
+A package for pilot data based simulations for estimation power in linear mixed models
 
 ## Getting started
 
@@ -12,13 +12,13 @@ To set up mixedpower, copy this bit of code and run in in your R-environment:
   if (!require("devtools")) {
     install.packages("devtools", dependencies = TRUE)}
 
-   devtools::install_github("DejanDraschkow/mixedpower") 
+   devtools::install_github("DejanDraschkow/mixedpower")
 ```
 
 ### 2. Use provided pipeline as tutorial 
 
-For a step-by-step tutorial on how to use this package, download the _mixedpower_pipeline.R_ file. 
-Everything you need to do and know to run your first mixedpower poweranalysis is explained in there.
+For a step-by-step tutorial on how to use this package, download the _mixedpower_pipeline.R_ file.
+Everything you need to do and know to run your first mixedpower power analysis is explained in there.
 
 
 ##
@@ -28,11 +28,3 @@ Kumle, L., Võ, M. L-H.., & Draschkow, D. (2018). Mixedpower: a library for esti
 
 
 :hatched_chick:
-   
-   
-   
- 
-
-
-
-
