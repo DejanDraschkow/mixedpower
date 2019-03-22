@@ -197,11 +197,11 @@ power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
     # --> this is a list of vectors!!
     
     # magic cheating
-    `%dopar%` <- foreach::`%dopar%`
+    cheatname <- foreach::`%dopar%`
     #okay now continue
     store_simulations <- foreach::foreach(iterators::icount(n_sim), .combine = "cbind",
                                           .export=ls(envir=globalenv()),
-                                          .packages = c("lme4")) `%dopar%` {
+                                          .packages = c("lme4")) cheatname {
 
 
                                    #------------------------------------#
