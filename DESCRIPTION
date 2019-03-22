@@ -3,9 +3,9 @@ Type: Package
 Title: Pilotdata based simulations for estimating power in linear mixed models 
 Version: 0.1.0
 Author@R: person("Leah", "Kumle", email = "leahkumle@gmail.com",
-                  role = c("aut", "cre"))
+                  role = c("aut", "cre")),
           person("Dejan", "Draschkow", email = "draschkow@psych.uni-frankfurt.de",
-                  role = c("aut"))
+                  role = c("aut")),
           person("Melissa L.-H.", "Võ", email = "mlvo@psych.uni-frankfurt.de",
                   role = c("ctb"))
 Maintainer: Leah Kumle <leahkumle@gmail.com>
