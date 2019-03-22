@@ -2,12 +2,13 @@ Package: mixedpower
 Type: Package
 Title: Pilotdata based simulations for estimating power in linear mixed models 
 Version: 0.1.0
-Author@R: person("Leah", "Kumle", email = "leahkumle@gmail.com",
+Author@R: c(
+          person("Leah", "Kumle", email = "leahkumle@gmail.com",
                   role = c("aut", "cre")),
           person("Dejan", "Draschkow", email = "draschkow@psych.uni-frankfurt.de",
                   role = c("aut")),
           person("Melissa L.-H.", "Võ", email = "mlvo@psych.uni-frankfurt.de",
-                  role = c("ctb"))
+                  role = c("ctb")))
 Maintainer: Leah Kumle <leahkumle@gmail.com>
 Description: Implementation of a simulation based aproach to power analysis. 
     Mixedpower uses pilotdata and a linear mixed model fitted with lme4 to simulate
