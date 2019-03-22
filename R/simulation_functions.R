@@ -201,7 +201,7 @@ power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
     #okay now continue
     store_simulations <- foreach::foreach(iterators::icount(n_sim), .combine = "cbind",
                                           .export=ls(envir=globalenv()),
-                                          .packages = c("lme4")) foreach::`%dopar%` {
+                                          .packages = c("lme4")) `%dopar%` {
 
 
                                    #------------------------------------#
