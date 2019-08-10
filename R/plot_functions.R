@@ -119,7 +119,7 @@ multiplotPower <- function(output_data, ppi = 300){
   }
   png("multiplot_powerSimulation.png", width=12*ppi, height=8*ppi, bg = "transparent", res=ppi)
   struct <- matrix(seq(1,nrow*ncol), ncol = ncol, nrow = nrow)
-  return(multiplot(plotlist = all_plots, layout = struct))
+  multiplot(plotlist = all_plots, layout = struct)
   dev.off()
 
 } # end function
