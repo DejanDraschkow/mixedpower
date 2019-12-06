@@ -223,6 +223,14 @@ check_significance <- function(model, critical_value){
   store_significance <- c()
 
   for (i in 1:length(fixef(model)[-1])){
+    # -- get specified critical_value for current effect --- #
+    if (length(critical_value) == 1){
+      crit_val <- critical_value
+    } else{
+      crit_val <- critical_value[i]
+    }
+
+
     # --------------------------------- get t/z value ---------------------- #
     # 1. ROW
     # -->  get row of effect of interest
@@ -242,7 +250,7 @@ check_significance <- function(model, critical_value){
       # ------------ test aganist significance level ------- #
 
       # --> is either TRUE or FALSE (= 1 or 0)
-      is_significant <- (t_value >= critical_value)
+      is_significant <- (t_value >= crit_val)
 
 
       # store significance
@@ -258,7 +266,7 @@ check_significance <- function(model, critical_value){
       # ------------ test aganist significance level ------- #
 
       # --> is either TRUE or FALSE (= 1 or 0)
-      is_significant <- (z_value >= critical_value)
+      is_significant <- (z_value >= crit_val)
 
       # store significance
       store_significance <- c(store_significance, is_significant)
@@ -266,6 +274,7 @@ check_significance <- function(model, critical_value){
   } # end for
   store_significance
 } # end function
+
 
 #-------------------------------------------------------------------------------------------------------#
 # GET N FROM DATA EMP
