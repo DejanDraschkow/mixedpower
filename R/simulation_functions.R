@@ -6,8 +6,8 @@
 #'
 #' @param model_emp lme4 model: mixed model of interest
 #' @param data_emp data frame: pilot data that fits the mixed model of interest
-#' @param subvar charackter element: name of the variable that contains the
-#' subject??s number
+#' @param simvar charackter element: name of the variable that contains the
+#' random effect we want to simulate along (e.g. subject number or stimuli number)
 #' in data_emp
 #' @param fixed_effects vector of character elements: names of variables that
 #'  are used as fixed effects in
@@ -28,10 +28,11 @@
 #' @return A modified mixed model
 #'
 #' @export
-mixedpower <- function(model_emp, data_emp, subvar, fixed_effects,
+mixedpower <- function(model_emp, data_emp, simvar, fixed_effects,
                       sample_sizes, n_sim, critical_value, confidence_level,
                       databased = T, safeguard = T, rnorm = F){
 
+  subvar <- simvar # lazy solution
   #### This function combines the whole power simulation process ###
 
   # prepare storing output
