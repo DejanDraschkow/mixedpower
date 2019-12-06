@@ -28,8 +28,8 @@
 #' @return A modified mixed model
 #'
 #' @export
-mixedpower <- function(model_emp, data_emp, simvar, fixed_effects,
-                      steps, n_sim, critical_value, confidence_level= 0.68,
+mixedpower <- function(model_emp, data_emp, fixed_effects, simvar,
+                      steps, critical_value, n_sim = 1000, confidence_level= 0.68,
                       databased = T, safeguard = T, rnorm = F){
 
   subvar <- simvar # lazy solution
