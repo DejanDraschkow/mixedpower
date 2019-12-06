@@ -13,7 +13,7 @@
 #'  are used as fixed effects in
 #' model emp
 #' @param n_sim integer: number of simulations to run
-#' @param sampe_sizes vector of integers: sample sizes you want to test power
+#' @param steps vector of integers: steps for "simvar" you want to test power
 #' of
 #' @param critical_value integer: z/t value to test if a given fixed effect
 #' is significant
@@ -29,10 +29,11 @@
 #'
 #' @export
 mixedpower <- function(model_emp, data_emp, simvar, fixed_effects,
-                      sample_sizes, n_sim, critical_value, confidence_level,
+                      steps, n_sim, critical_value, confidence_level= 0.68,
                       databased = T, safeguard = T, rnorm = F){
 
   subvar <- simvar # lazy solution
+  sample_sizes <- steps
   #### This function combines the whole power simulation process ###
 
   # prepare storing output
