@@ -32,7 +32,7 @@ mixedpower <- function(model_emp, data_emp, fixed_effects, simvar,
                       steps, critical_value, n_sim = 1000, confidence_level= 0.68,
                       databased = T, safeguard = T, rnorm = F){
 
-  subvar <- simvar # lazy solution
+
   sample_sizes <- steps
   #### This function combines the whole power simulation process ###
 
@@ -43,7 +43,7 @@ mixedpower <- function(model_emp, data_emp, fixed_effects, simvar,
   # ------------------------ #
   # 1. databased
   if (databased == T){
-    databased_power_values <- power_simulation(model_emp, data_emp, subvar, fixed_effects,
+    databased_power_values <- power_simulation(model_emp, data_emp, simvar, fixed_effects,
                                                critical_value, sample_sizes, n_sim, confidence_level,
                                                safeguard = F, rnorm = F)
 
@@ -58,7 +58,7 @@ mixedpower <- function(model_emp, data_emp, fixed_effects, simvar,
 
   # 2. safeguard
   if (safeguard == T){
-    safeguard_power_values <- power_simulation(model_emp, data_emp, subvar, fixed_effects,
+    safeguard_power_values <- power_simulation(model_emp, data_emp, simvar, fixed_effects,
                                                critical_value, sample_sizes, n_sim, confidence_level,
                                                safeguard = T, rnorm = F)
 
@@ -72,7 +72,7 @@ mixedpower <- function(model_emp, data_emp, fixed_effects, simvar,
 
   # 3. rnorm
   if (rnorm == T){
-    rnorm_power_values <- power_simulation(model_emp, data_emp, subvar, fixed_effects,
+    rnorm_power_values <- power_simulation(model_emp, data_emp, simvar, fixed_effects,
                                            critical_value, sample_sizes, n_sim, confidence_level,
                                            safeguard = F, rnorm = T)
 
@@ -109,7 +109,7 @@ mixedpower <- function(model_emp, data_emp, fixed_effects, simvar,
 #'
 #' @param model_emp lme4 model: mixed model of interest
 #' @param data_emp data frame: pilot data that fits the mixed model of interest
-#' @param subvar charackter element: name of the variable that contains the
+#' @param simvar charackter element: name of the variable that contains the
 #' subject??s number
 #' in data_emp
 #' @param fixed_effects vector of character elements: names of variables that
@@ -127,7 +127,7 @@ mixedpower <- function(model_emp, data_emp, fixed_effects, simvar,
 #' @return A modified mixed model
 #'
 #' @export
-power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
+power_simulation <- function(model_emp, data_emp, simvar, fixed_effects,
                              critical_value, sample_sizes, n_sim, confidence_level,
                              safeguard = F, rnorm = F){
 
@@ -212,7 +212,7 @@ power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
                                    if (rnorm == T){
                                      model_for_simulation <- prepare_rnorm_model(model_emp,
                                                                                  data_emp,
-                                                                                 subvar,
+                                                                                 simvar,
                                                                                  critical_value)
                                    }
                                    #------------------------------------#
@@ -223,7 +223,7 @@ power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
                                    simulated_data <- simulateSamplesize(n_want = n,
                                                                         data_emp = data_emp,
                                                                         model_emp = model_for_simulation,
-                                                                        subvar = subvar)
+                                                                        simvar = simvar)
 
                                    #------------------------------------#
                                    #2. code contrasts for simulated data set
@@ -291,14 +291,14 @@ power_simulation <- function(model_emp, data_emp, subvar, fixed_effects,
 #' @param n_want integer: how many subjects should the new data set include?
 #' @param data_emp data frame: pilot data that fits the mixed model of interest
 #' @param model_emp lme4 model: mixed model of interest
-#' @param subvar character element: name of the varaible containing the subject
+#' @param simvar character element: name of the varaible containing the subject
 #' number in data_emp
 #'
 #' @return A modified mixed model
 #'
 #' @export
 
-simulateSamplesize <- function(n_want, data_emp, model_emp, subvar){
+simulateSamplesize <- function(n_want, data_emp, model_emp, simvar){
   # ---------------------------------------------------------------------------- #
   # STEP 1: set relevant paramaters
 
@@ -306,7 +306,7 @@ simulateSamplesize <- function(n_want, data_emp, model_emp, subvar){
   depvar <- get_depvar(model_emp)
 
   # how many subjects are in the pilot data? --> n_now
-  n_now <- get_n(data_emp, subvar)
+  n_now <- get_n(data_emp, simvar)
 
   # number of dublicates we need from the original dataset # --> ceiling()
   # --> floor gets next lower integer (we already have one multiplication with exp4)
@@ -343,19 +343,19 @@ simulateSamplesize <- function(n_want, data_emp, model_emp, subvar){
       # --> change subjects names only from second iteration on
 
       # check if it is a factor
-      if( is.numeric(final_data[[subvar]]) == F) {
+      if( is.numeric(final_data[[simvar]]) == F) {
         # do step 1.
 
-        new_names <- as.numeric(new_part[[subvar]]) + (i-1)*n_now
-        new_part[[subvar]] <- new_names
+        new_names <- as.numeric(new_part[[simvar]]) + (i-1)*n_now
+        new_part[[simvar]] <- new_names
 
-        # re-convert subvar to a factor
-        new_part[[subvar]] <- factor(new_part[[subvar]])
+        # re-convert simvar to a factor
+        new_part[[simvar]] <- factor(new_part[[simvar]])
       } else {
 
         # do step 1.
-        new_names <- new_part[[subvar]] + (i-1)*n_now
-        new_part[[subvar]] <- new_names
+        new_names <- new_part[[simvar]] + (i-1)*n_now
+        new_part[[simvar]] <- new_names
 
       } # end inner if else
 
@@ -373,33 +373,33 @@ simulateSamplesize <- function(n_want, data_emp, model_emp, subvar){
   # --------------------------------------------------------------------------- #
   # STEP 3: delete participants to get the exact n  and return it
 
-  #--> subvar needs to be numeric for that, so it needs to be converted temporarly
+  #--> simvar needs to be numeric for that, so it needs to be converted temporarly
 
   # store old version
-  #store_old <- final_data[[subvar]]
+  #store_old <- final_data[[simvar]]
 
   # check if it is a factor
-  if( is.numeric(final_data[[subvar]]) == F) {
+  if( is.numeric(final_data[[simvar]]) == F) {
     # 2. convert  to numeric
-    final_data[[subvar]] <- as.numeric(final_data[[subvar]])
+    final_data[[simvar]] <- as.numeric(final_data[[simvar]])
 
 
     # now do STEP 3:
-    final_data <- final_data[final_data[[subvar]] <= n_want,]
+    final_data <- final_data[final_data[[simvar]] <= n_want,]
 
     # re-convert to factor
-    final_data[[subvar]] <- factor(final_data[[subvar]])
+    final_data[[simvar]] <- factor(final_data[[simvar]])
 
     # if not: just subset final data to correct n
   } else {
-    final_data <- final_data[final_data[[subvar]] <= n_want,]
+    final_data <- final_data[final_data[[simvar]] <= n_want,]
   }# end if
 
   # now do STEP 3:
-  #final_data <- final_data[final_data[[subvar]] <= n_want,]
+  #final_data <- final_data[final_data[[simvar]] <= n_want,]
 
   # get back to old version
-  #final_data[[subvar]] <- store_old[1:nrow(final_data)]
+  #final_data[[simvar]] <- store_old[1:nrow(final_data)]
 
   # return final_data
   final_data

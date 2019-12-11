@@ -12,7 +12,7 @@
 #'
 #' @param model mixed model of interest
 #' @param data_emp pilot data that fits the mixed model of interest
-#' @param subvar name of the variable that contains the subject??s number
+#' @param simvar name of the variable that contains the subject??s number
 #' in data_emp
 #' @param critical_value z/t value to test if a given fixed effect
 #' is significant
@@ -20,7 +20,7 @@
 #' @return A modified mixed model
 #'
 #' @export
-prepare_rnorm_model <- function(model_emp, data_emp, subvar, critical_value){
+prepare_rnorm_model <- function(model_emp, data_emp, simvar, critical_value){
 
   # --------------------------------------------------------- #
 
@@ -32,7 +32,7 @@ prepare_rnorm_model <- function(model_emp, data_emp, subvar, critical_value){
 
   # SD = SE* sqrt(n)
   # get n to compute SD
-  n <- get_n(data_emp, subvar)
+  n <- get_n(data_emp, simvar)
   SD <- fixefs[, "Std. Error"] * sqrt(n)
 
   ### prepare ###
@@ -285,22 +285,22 @@ check_significance <- function(model, critical_value){
 #' the number of unique occurences.
 #'
 #' @param data data set you want to get n for
-#' @param subvar name of variable in data that contains the subject number
+#' @param simvar name of variable in data that contains the subject number
 #'
 #' @export
-get_n <- function(data, subvar){
+get_n <- function(data, simvar){
 
-  # --> first: check if subvar is numeric and convert to numeric if not
+  # --> first: check if simvar is numeric and convert to numeric if not
   # --> max() needs numeric vector
-  # 1. check if subvar is numeric
-  #if( is.numeric(data[[subvar]]) == F) {
+  # 1. check if simvar is numeric
+  #if( is.numeric(data[[simvar]]) == F) {
 
     # 2. convert  to numeric
-   # data[[subvar]] <- as.numeric(as.character(data[[subvar]]))
+   # data[[simvar]] <- as.numeric(as.character(data[[simvar]]))
   #} # end if
 
   # --> now get n_now ;)
-  n <- length(unique(data[[subvar]], na.rm = T))
+  n <- length(unique(data[[simvar]], na.rm = T))
 
   # return nnow
   n
