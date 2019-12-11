@@ -20,14 +20,14 @@
 #' @return A modified mixed model
 #'
 #' @export
-prepare_rnorm_model <- function(model_emp, data_emp, simvar, critical_value){
+prepare_rnorm_model <- function(model, data_emp, simvar, critical_value){
 
   # --------------------------------------------------------- #
 
   # 1. get fixed effects and their distribution
 
   # [-1, ] removes intercept --> we dont need it
-  fixefs <- summary(model_emp)$coefficients[-1,]
+  fixefs <- summary(model)$coefficients[-1,]
   fixef_values <- fixefs[, "Estimate"]
 
   # SD = SE* sqrt(n)
@@ -37,11 +37,11 @@ prepare_rnorm_model <- function(model_emp, data_emp, simvar, critical_value){
 
   ### prepare ###
   # --> this is a TRUE FALSE vector
-  significant_effects <- check_significance(model_emp, critical_value)
+  significant_effects <- check_significance(model, critical_value)
 
 
 
-  # ---------- change model_emp ------------------------ #
+  # ---------- change model ------------------------ #
   # 1. look at every effect
   for (i in 1:length(significant_effects)){
 
@@ -58,13 +58,13 @@ prepare_rnorm_model <- function(model_emp, data_emp, simvar, critical_value){
       # 2. construct normal distribution and randomly choose one observation
       # 3. change model to this random effect parameter
       # i +1 : because intercept is still in this @beta thing
-      model_emp@beta[i + 1] <- rnorm(1, mean = effect, sd = sd)
+      model@beta[i + 1] <- rnorm(1, mean = effect, sd = sd)
 
     } else if(significant_effects[i] == FALSE){
 
       # inform user that old paramter is used to compute power
-      non_significant_effect <- row.names(summary(model_emp)$coefficients)[i+1]
-      cat(paste("WARNING:", non_significant_effect, "is not significant in model_emp. \n  rNorm Power cannot be computed for this effect\n"))
+      non_significant_effect <- row.names(summary(model)$coefficients)[i+1]
+      cat(paste("WARNING:", non_significant_effect, "is not significant in model. \n  rNorm Power cannot be computed for this effect\n"))
 
     } else {
 
@@ -73,7 +73,7 @@ prepare_rnorm_model <- function(model_emp, data_emp, simvar, critical_value){
   } # end for
 
   ### return modified model == rnorm model
-  model_emp
+  model
 } # end function
 
 
@@ -91,7 +91,7 @@ prepare_rnorm_model <- function(model_emp, data_emp, simvar, critical_value){
 #' interval. Non significant effects in the given model are ignored and
 #' no safeguard-value is computet for them.
 #'
-#' @param model_emp mixed model of interest
+#' @param model mixed model of interest
 #' @param confidence_level level of confidence that the parameter lies
 #' in the interval
 #' @param critical_value z/t value to test if a given fixed effect
@@ -100,22 +100,22 @@ prepare_rnorm_model <- function(model_emp, data_emp, simvar, critical_value){
 #' @return A modified mixed model
 #'
 #' @export
-prepare_safeguard_model <- function(model_emp, confidence_level, critical_value){
+prepare_safeguard_model <- function(model, confidence_level, critical_value){
 
   # ---------- prepare ------------------------ #
   # 1. check which effects are significant
 
   # --> this is a TRUE FALSE vector
-  significant_effects <- check_significance(model_emp, critical_value)
+  significant_effects <- check_significance(model, critical_value)
 
   # 2. compute confidence intervals
 
   # things we want intervals for: (kick out those .sig01 stuff)
-  effects <- row.names(summary(model_emp)$coefficients)[-1]
-  confints <- confint(model_emp, method = "Wald",  level = confidence_level, parm = effects)
+  effects <- row.names(summary(model)$coefficients)[-1]
+  confints <- confint(model, method = "Wald",  level = confidence_level, parm = effects)
 
 
-  # ---------- change model_emp ------------------------ #
+  # ---------- change model ------------------------ #
   # 1. look at every effect
   for (i in 1:length(significant_effects)){
 
@@ -127,18 +127,18 @@ prepare_safeguard_model <- function(model_emp, confidence_level, critical_value)
       # A. get safeguard effect: needs to be the one closer to 0
       #--> depends on effect of interest: negativ or positiv ?
       row <- i +1 # because there also is the intercept in coefficients that we want to skip
-      safeguard_effect <- ifelse(summary(model_emp)$coefficients[row,1] > 0,
+      safeguard_effect <- ifelse(summary(model)$coefficients[row,1] > 0,
                                  confints[i,1],
                                  confints[i,2])
 
       # B. change model parameter of effect of interest to safeguard effect
-      model_emp@beta[row] <- safeguard_effect
+      model@beta[row] <- safeguard_effect
 
     } else if(significant_effects[i] == FALSE){
 
       # inform user that old paramter is used to compute power
-      non_significant_effect <- row.names(summary(model_emp)$coefficients)[i+1]
-      cat(paste("WARNING:", non_significant_effect, "is not significant in model_emp. \n  Safeguard Power cannot be computed for this effect\n"))
+      non_significant_effect <- row.names(summary(model)$coefficients)[i+1]
+      cat(paste("WARNING:", non_significant_effect, "is not significant in model. \n  Safeguard Power cannot be computed for this effect\n"))
 
     } else {
 
@@ -148,7 +148,7 @@ prepare_safeguard_model <- function(model_emp, confidence_level, critical_value)
 
 
   # ---------- return safeguard model ------------------------ #
-  model_emp
+  model
 } # end function
 
 #-------------------------------------------------------------------------------------------------------#
@@ -169,15 +169,15 @@ prepare_safeguard_model <- function(model_emp, confidence_level, critical_value)
 #'
 #' @param simulated_data simulated data set (= output of simulate_samplesize)
 #' @param data_emp pilot data used for power simulation
-#' @param model_emp mixed model used for power simulation.
+#' @param model mixed model used for power simulation.
 #' Needs to fit data_emp.
 #' @param fixed_effects names of variables in data_emp that are used as
-#' fixed effects in model_emp
+#' fixed effects in model
 #'
 #' @return Date frame
 #'
 #' @export
-reset_contrasts <- function(simulated_data, data_emp, model_emp, fixed_effects ) {
+reset_contrasts <- function(simulated_data, data_emp, model, fixed_effects ) {
 
   # --> 1. get names from all variables in model
   variable_names <- fixed_effects
@@ -205,7 +205,7 @@ reset_contrasts <- function(simulated_data, data_emp, model_emp, fixed_effects )
 
 # CHECK SIGNIFICANCE
 
-#' Gets t/z value out of model_emp and compares it to a ctritical value
+#' Gets t/z value out of model and compares it to a ctritical value
 #'
 #' \code{check_significance()} checks the t/z value of all fixed effects and
 #' compares them to the specified critical value. Returns a logical vector
@@ -239,7 +239,7 @@ check_significance <- function(model, critical_value){
     # 2. COLUMN which column is the right one??
     # --> check if model is lmer or glmer
 
-    # what happens if model_emp is a lmer?
+    # what happens if model is a lmer?
     if (lme4::getME(model, "devcomp")$dims[["GLMM"]] == 0) {
 
 
@@ -257,7 +257,7 @@ check_significance <- function(model, critical_value){
       store_significance <- c(store_significance, is_significant)
 
 
-      # what happens if model_emp is a glmer?
+      # what happens if model is a glmer?
     } else if (lme4::getME(model, "devcomp")$dims[["GLMM"]] == 1) {
 
       #... this: we need "z value"
