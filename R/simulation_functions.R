@@ -5,10 +5,10 @@
 #' for all three options.
 #'
 #' @param model lme4 model: mixed model of interest
-#' @param data_emp data frame: pilot data that fits the mixed model of interest
+#' @param data data frame: pilot data that fits the mixed model of interest
 #' @param simvar charackter element: name of the variable that contains the
 #' random effect we want to simulate along (e.g. subject number or stimuli number)
-#' in data_emp
+#' in data
 #' @param fixed_effects vector of character elements: names of variables that
 #'  are used as fixed effects in
 #' model emp
@@ -28,7 +28,7 @@
 #' @return A modified mixed model
 #'
 #' @export
-mixedpower <- function(model, data_emp, fixed_effects, simvar,
+mixedpower <- function(model, data, fixed_effects, simvar,
                       steps, critical_value, n_sim = 1000, confidence_level= 0.68,
                       databased = T, safeguard = T, rnorm = F){
 
@@ -43,7 +43,7 @@ mixedpower <- function(model, data_emp, fixed_effects, simvar,
   # ------------------------ #
   # 1. databased
   if (databased == T){
-    databased_power_values <- power_simulation(model, data_emp, simvar, fixed_effects,
+    databased_power_values <- power_simulation(model, data, simvar, fixed_effects,
                                                critical_value, steps, n_sim, confidence_level,
                                                safeguard = F, rnorm = F)
 
@@ -58,7 +58,7 @@ mixedpower <- function(model, data_emp, fixed_effects, simvar,
 
   # 2. safeguard
   if (safeguard == T){
-    safeguard_power_values <- power_simulation(model, data_emp, simvar, fixed_effects,
+    safeguard_power_values <- power_simulation(model, data, simvar, fixed_effects,
                                                critical_value, steps, n_sim, confidence_level,
                                                safeguard = T, rnorm = F)
 
@@ -72,7 +72,7 @@ mixedpower <- function(model, data_emp, fixed_effects, simvar,
 
   # 3. rnorm
   if (rnorm == T){
-    rnorm_power_values <- power_simulation(model, data_emp, simvar, fixed_effects,
+    rnorm_power_values <- power_simulation(model, data, simvar, fixed_effects,
                                            critical_value, steps, n_sim, confidence_level,
                                            safeguard = F, rnorm = T)
 
@@ -108,10 +108,10 @@ mixedpower <- function(model, data_emp, fixed_effects, simvar,
 #' for all fixed effects and all tested sample sizes.
 #'
 #' @param model lme4 model: mixed model of interest
-#' @param data_emp data frame: pilot data that fits the mixed model of interest
+#' @param data data frame: pilot data that fits the mixed model of interest
 #' @param simvar charackter element: name of the variable that contains the
 #' subject??s number
-#' in data_emp
+#' in data
 #' @param fixed_effects vector of character elements: names of variables that
 #'  are used as fixed effects in
 #' model emp
@@ -127,7 +127,7 @@ mixedpower <- function(model, data_emp, fixed_effects, simvar,
 #' @return A modified mixed model
 #'
 #' @export
-power_simulation <- function(model, data_emp, simvar, fixed_effects,
+power_simulation <- function(model, data, simvar, fixed_effects,
                              critical_value, steps, n_sim, confidence_level,
                              safeguard = F, rnorm = F){
 
@@ -211,7 +211,7 @@ power_simulation <- function(model, data_emp, simvar, fixed_effects,
                                    # IF RNORM MODEL:
                                    if (rnorm == T){
                                      model_for_simulation <- prepare_rnorm_model(model,
-                                                                                 data_emp,
+                                                                                 data,
                                                                                  simvar,
                                                                                  critical_value)
                                    }
@@ -221,14 +221,14 @@ power_simulation <- function(model, data_emp, simvar, fixed_effects,
                                    #-------------------------------------#
                                    # 1. simulate data set with n subjects
                                    simulated_data <- simulateSamplesize(n_want = n,
-                                                                        data_emp = data_emp,
+                                                                        data = data,
                                                                         model = model_for_simulation,
                                                                         simvar = simvar)
 
                                    #------------------------------------#
                                    #2. code contrasts for simulated data set
                                    final_dataset <- reset_contrasts(simulated_data,
-                                                                    data_emp,
+                                                                    data,
                                                                     model,
                                                                     fixed_effects)
 
@@ -289,16 +289,16 @@ power_simulation <- function(model, data_emp, simvar, fixed_effects,
 #' values based on the mixed model fittet to the pilot data.
 #'
 #' @param n_want integer: how many subjects should the new data set include?
-#' @param data_emp data frame: pilot data that fits the mixed model of interest
+#' @param data data frame: pilot data that fits the mixed model of interest
 #' @param model lme4 model: mixed model of interest
 #' @param simvar character element: name of the varaible containing the subject
-#' number in data_emp
+#' number in data
 #'
 #' @return A modified mixed model
 #'
 #' @export
 
-simulateSamplesize <- function(n_want, data_emp, model, simvar){
+simulateSamplesize <- function(n_want, data, model, simvar){
   # ---------------------------------------------------------------------------- #
   # STEP 1: set relevant paramaters
 
@@ -306,7 +306,7 @@ simulateSamplesize <- function(n_want, data_emp, model, simvar){
   depvar <- get_depvar(model)
 
   # how many subjects are in the pilot data? --> n_now
-  n_now <- get_n(data_emp, simvar)
+  n_now <- get_n(data, simvar)
 
   # number of dublicates we need from the original dataset # --> ceiling()
   # --> floor gets next lower integer (we already have one multiplication with exp4)
@@ -326,7 +326,7 @@ simulateSamplesize <- function(n_want, data_emp, model, simvar){
 
     ###--- create new data set: rename vp variable and replace variable of interest with simulated data--- ##
     # copy old data set
-    new_part <- data_emp
+    new_part <- data
 
 
 

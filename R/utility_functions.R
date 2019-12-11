@@ -11,16 +11,16 @@
 #' in the given model are ignored and no rnorm-value is computet for them.
 #'
 #' @param model mixed model of interest
-#' @param data_emp pilot data that fits the mixed model of interest
+#' @param data pilot data that fits the mixed model of interest
 #' @param simvar name of the variable that contains the subject??s number
-#' in data_emp
+#' in data
 #' @param critical_value z/t value to test if a given fixed effect
 #' is significant
 #'
 #' @return A modified mixed model
 #'
 #' @export
-prepare_rnorm_model <- function(model, data_emp, simvar, critical_value){
+prepare_rnorm_model <- function(model, data, simvar, critical_value){
 
   # --------------------------------------------------------- #
 
@@ -32,7 +32,7 @@ prepare_rnorm_model <- function(model, data_emp, simvar, critical_value){
 
   # SD = SE* sqrt(n)
   # get n to compute SD
-  n <- get_n(data_emp, simvar)
+  n <- get_n(data, simvar)
   SD <- fixefs[, "Std. Error"] * sqrt(n)
 
   ### prepare ###
@@ -155,7 +155,7 @@ prepare_safeguard_model <- function(model, confidence_level, critical_value){
 # RESET CONTRASTS FUNCTION
 
 # simulateSamplesize loses contrasts --> rbind
-# --> this function resets all contrasts from data_emp
+# --> this function resets all contrasts from data
 
 
 #' Resets specified contrasts in the simulated dataset
@@ -168,16 +168,16 @@ prepare_safeguard_model <- function(model, confidence_level, critical_value){
 #' in the pilot dataset and copies them to the simulated dataset.
 #'
 #' @param simulated_data simulated data set (= output of simulate_samplesize)
-#' @param data_emp pilot data used for power simulation
+#' @param data pilot data used for power simulation
 #' @param model mixed model used for power simulation.
-#' Needs to fit data_emp.
-#' @param fixed_effects names of variables in data_emp that are used as
+#' Needs to fit data.
+#' @param fixed_effects names of variables in data that are used as
 #' fixed effects in model
 #'
 #' @return Date frame
 #'
 #' @export
-reset_contrasts <- function(simulated_data, data_emp, model, fixed_effects ) {
+reset_contrasts <- function(simulated_data, data, model, fixed_effects ) {
 
   # --> 1. get names from all variables in model
   variable_names <- fixed_effects
@@ -187,13 +187,13 @@ reset_contrasts <- function(simulated_data, data_emp, model, fixed_effects ) {
   for (variable in variable_names){
 
     # check if variable is a factor (contrasts only work with factors)
-    if (is.factor(data_emp[[variable]]) == T){
+    if (is.factor(data[[variable]]) == T){
       # get original contrast
-      data_emp_contr <- contrasts(data_emp[[variable]])
+      data_contr <- contrasts(data[[variable]])
 
 
       # apply original contrast to simulated data set
-      contrasts(simulated_data[[variable]]) <- data_emp_contr
+      contrasts(simulated_data[[variable]]) <- data_contr
     } # end if
   } # end for loop
 
