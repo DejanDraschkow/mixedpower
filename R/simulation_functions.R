@@ -33,7 +33,7 @@ mixedpower <- function(model_emp, data_emp, fixed_effects, simvar,
                       databased = T, safeguard = T, rnorm = F){
 
 
-  sample_sizes <- steps
+  steps <- steps
   #### This function combines the whole power simulation process ###
 
   # prepare storing output
@@ -44,7 +44,7 @@ mixedpower <- function(model_emp, data_emp, fixed_effects, simvar,
   # 1. databased
   if (databased == T){
     databased_power_values <- power_simulation(model_emp, data_emp, simvar, fixed_effects,
-                                               critical_value, sample_sizes, n_sim, confidence_level,
+                                               critical_value, steps, n_sim, confidence_level,
                                                safeguard = F, rnorm = F)
 
     # store output
@@ -59,7 +59,7 @@ mixedpower <- function(model_emp, data_emp, fixed_effects, simvar,
   # 2. safeguard
   if (safeguard == T){
     safeguard_power_values <- power_simulation(model_emp, data_emp, simvar, fixed_effects,
-                                               critical_value, sample_sizes, n_sim, confidence_level,
+                                               critical_value, steps, n_sim, confidence_level,
                                                safeguard = T, rnorm = F)
 
     safeguard_power_values["mode"] <- "safeguard"
@@ -73,7 +73,7 @@ mixedpower <- function(model_emp, data_emp, fixed_effects, simvar,
   # 3. rnorm
   if (rnorm == T){
     rnorm_power_values <- power_simulation(model_emp, data_emp, simvar, fixed_effects,
-                                           critical_value, sample_sizes, n_sim, confidence_level,
+                                           critical_value, steps, n_sim, confidence_level,
                                            safeguard = F, rnorm = T)
 
     rnorm_power_values["mode"] <- "rnorm"
@@ -128,7 +128,7 @@ mixedpower <- function(model_emp, data_emp, fixed_effects, simvar,
 #'
 #' @export
 power_simulation <- function(model_emp, data_emp, simvar, fixed_effects,
-                             critical_value, sample_sizes, n_sim, confidence_level,
+                             critical_value, steps, n_sim, confidence_level,
                              safeguard = F, rnorm = F){
 
 
@@ -166,7 +166,7 @@ power_simulation <- function(model_emp, data_emp, simvar, fixed_effects,
   # [-1] removes the Intercept
   n_row <- length(fixef(model_emp)[-1])
   # n col
-  n_col <- length(sample_sizes)
+  n_col <- length(steps)
 
   # row_names = names of effects (again remove intercept)
   row_names <- row.names(summary(model_emp)$coefficients)[-1]
@@ -175,12 +175,12 @@ power_simulation <- function(model_emp, data_emp, simvar, fixed_effects,
   power_values_all <- data.frame(matrix(ncol = n_col, nrow = n_row),
                                  row.names = row_names)
   # name stuff (header)
-  names(power_values_all) <- sample_sizes
+  names(power_values_all) <- steps
 
   index_n <- 0 # index to store power value in Power_value later
 
   # loop through different sample sizes
-  for (n in sample_sizes){
+  for (n in steps){
 
     # inform which sample sizes we are computing power right now
     print("Estimating power for sample size:")
