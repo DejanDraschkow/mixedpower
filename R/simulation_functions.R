@@ -30,7 +30,7 @@
 #' @export
 mixedpower <- function(model, data, fixed_effects, simvar,
                       steps, critical_value, n_sim = 1000, confidence_level= 0.68,
-                      databased = T, safeguard = T, rnorm = F){
+                      databased = T, safeguard = F, rnorm = F){
 
 
 
