@@ -298,7 +298,7 @@ power_simulation <- function(model, data, simvar, fixed_effects,
 #'
 #' @export
 
-simulateSamplesize <- function(n_want, data, model, simvar){
+simulateDataset <- function(n_want, data, model, simvar){
   # ---------------------------------------------------------------------------- #
   # STEP 1: set relevant paramaters
 
