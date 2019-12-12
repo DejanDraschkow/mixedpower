@@ -4,18 +4,18 @@
 \alias{prepare_rnorm_model}
 \title{Function to prepare a mixed model with varied fixed effect estimantes}
 \usage{
-prepare_rnorm_model(model_emp, data_emp, subvar, critical_value)
+prepare_rnorm_model(model, data, simvar, critical_value)
 }
 \arguments{
-\item{data_emp}{pilot data that fits the mixed model of interest}
+\item{model}{mixed model of interest}
 
-\item{subvar}{name of the variable that contains the subject´s number
-in data_emp}
+\item{data}{pilot data that fits the mixed model of interest}
+
+\item{simvar}{name of the variable that contains the subject??s number
+in data}
 
 \item{critical_value}{z/t value to test if a given fixed effect
 is significant}
-
-\item{model}{mixed model of interest}
 }
 \value{
 A modified mixed model

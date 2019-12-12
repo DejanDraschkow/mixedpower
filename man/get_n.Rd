@@ -4,12 +4,12 @@
 \alias{get_n}
 \title{Gets number of participants in a dataset}
 \usage{
-get_n(data, subvar)
+get_n(data, simvar)
 }
 \arguments{
 \item{data}{data set you want to get n for}
 
-\item{subvar}{name of variable in data that contains the subject number}
+\item{simvar}{name of variable in data that contains the subject number}
 }
 \description{
 \code{get_n()} checks the column indicating the subject number and returns

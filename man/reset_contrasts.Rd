@@ -4,18 +4,18 @@
 \alias{reset_contrasts}
 \title{Resets specified contrasts in the simulated dataset}
 \usage{
-reset_contrasts(simulated_data, data_emp, model_emp, fixed_effects)
+reset_contrasts(simulated_data, data, model, fixed_effects)
 }
 \arguments{
 \item{simulated_data}{simulated data set (= output of simulate_samplesize)}
 
-\item{data_emp}{pilot data used for power simulation}
+\item{data}{pilot data used for power simulation}
 
-\item{model_emp}{mixed model used for power simulation.
-Needs to fit data_emp.}
+\item{model}{mixed model used for power simulation.
+Needs to fit data.}
 
-\item{fixed_effects}{names of variables in data_emp that are used as
-fixed effects in model_emp}
+\item{fixed_effects}{names of variables in data that are used as
+fixed effects in model}
 }
 \value{
 Date frame

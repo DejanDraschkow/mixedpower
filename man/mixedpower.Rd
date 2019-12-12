@@ -4,26 +4,33 @@
 \alias{mixedpower}
 \title{Function thatr runs the whole mixedpower power process}
 \usage{
-mixedpower(model_emp, data_emp, subvar, fixed_effects, critical_value,
-  sample_sizes, n_sim, databased = T, safeguard = T, rnorm = T)
+mixedpower(model, data, fixed_effects, simvar, steps, critical_value,
+  n_sim = 1000, confidence_level = 0.68, databased = T,
+  safeguard = F, rnorm = F)
 }
 \arguments{
-\item{model_emp}{lme4 model: mixed model of interest}
+\item{model}{lme4 model: mixed model of interest}
 
-\item{data_emp}{data frame: pilot data that fits the mixed model of interest}
-
-\item{subvar}{charackter element: name of the variable that contains the
-subject´s number
-in data_emp}
+\item{data}{data frame: pilot data that fits the mixed model of interest}
 
 \item{fixed_effects}{vector of character elements: names of variables that
  are used as fixed effects in
 model emp}
 
+\item{simvar}{charackter element: name of the variable that contains the
+random effect we want to simulate along (e.g. subject number or stimuli number)
+in data}
+
+\item{steps}{vector of integers: steps for "simvar" you want to test power
+of}
+
 \item{critical_value}{integer: z/t value to test if a given fixed effect
 is significant}
 
 \item{n_sim}{integer: number of simulations to run}
+
+\item{confidence_level}{float: value between 0-1 indicating the width of the
+confidence interval used for the safeguard option}
 
 \item{databased}{logical value: indicates whether databased power simulation
 shoul be run}
@@ -33,9 +40,6 @@ shoul be run}
 
 \item{rnorm}{logical value: indicates whether rnorm power simulation
 shoul be run}
-
-\item{sampe_sizes}{vector of integers: sample sizes you want to test power
-of}
 }
 \value{
 A modified mixed model

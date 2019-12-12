@@ -4,17 +4,17 @@
 \alias{power_simulation}
 \title{Function that runs the power simulation}
 \usage{
-power_simulation(model_emp, data_emp, subvar, fixed_effects, critical_value,
-  sample_sizes, n_sim, safeguard = F, rnorm = F)
+power_simulation(model, data, simvar, fixed_effects, critical_value, steps,
+  n_sim, confidence_level, safeguard = F, rnorm = F)
 }
 \arguments{
-\item{model_emp}{lme4 model: mixed model of interest}
+\item{model}{lme4 model: mixed model of interest}
 
-\item{data_emp}{data frame: pilot data that fits the mixed model of interest}
+\item{data}{data frame: pilot data that fits the mixed model of interest}
 
-\item{subvar}{charackter element: name of the variable that contains the
-subject´s number
-in data_emp}
+\item{simvar}{charackter element: name of the variable that contains the
+subject??s number
+in data}
 
 \item{fixed_effects}{vector of character elements: names of variables that
  are used as fixed effects in

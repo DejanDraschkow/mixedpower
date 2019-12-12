@@ -2,7 +2,7 @@
 % Please edit documentation in R/utility_functions.R
 \name{check_significance}
 \alias{check_significance}
-\title{Gets t/z value out of model_emp and compares it to a ctritical value}
+\title{Gets t/z value out of model and compares it to a ctritical value}
 \usage{
 check_significance(model, critical_value)
 }

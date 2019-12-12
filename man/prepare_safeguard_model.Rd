@@ -5,10 +5,10 @@
 \title{Function that computes confidence intervals for fixed effects and
 sets them to the lower boundary of this CI}
 \usage{
-prepare_safeguard_model(model_emp, confidence_level, critical_value)
+prepare_safeguard_model(model, confidence_level, critical_value)
 }
 \arguments{
-\item{model_emp}{mixed model of interest}
+\item{model}{mixed model of interest}
 
 \item{confidence_level}{level of confidence that the parameter lies
 in the interval}
