@@ -154,7 +154,7 @@ prepare_safeguard_model <- function(model, confidence_level, critical_value){
 #-------------------------------------------------------------------------------------------------------#
 # RESET CONTRASTS FUNCTION
 
-# simulateSamplesize loses contrasts --> rbind
+# simulateDataset loses contrasts --> rbind
 # --> this function resets all contrasts from data
 
 

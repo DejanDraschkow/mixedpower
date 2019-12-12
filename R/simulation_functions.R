@@ -220,7 +220,7 @@ power_simulation <- function(model, data, simvar, fixed_effects,
 
                                    #-------------------------------------#
                                    # 1. simulate data set with n subjects
-                                   simulated_data <- simulateSamplesize(n_want = n,
+                                   simulated_data <- simulateDataset(n_want = n,
                                                                         data = data,
                                                                         model = model_for_simulation,
                                                                         simvar = simvar)
@@ -284,7 +284,7 @@ power_simulation <- function(model, data, simvar, fixed_effects,
 
 #' Simulate a new data set
 #'
-#' \code{simulateSamplesize()} builds a new data set with a specified number of
+#' \code{simulateDataset()} builds a new data set with a specified number of
 #' subjects. It uses the \code{lme4::simulate()} function to create new response
 #' values based on the mixed model fittet to the pilot data.
 #'
