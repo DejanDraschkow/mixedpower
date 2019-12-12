@@ -6,17 +6,17 @@
 #'
 #' @param model lme4 model: mixed model of interest
 #' @param data data frame: pilot data that fits the mixed model of interest
-#' @param simvar charackter element: name of the variable that contains the
-#' random effect we want to simulate along (e.g. subject number or stimuli number)
-#' in data
 #' @param fixed_effects vector of character elements: names of variables that
 #'  are used as fixed effects in
 #' model emp
-#' @param n_sim integer: number of simulations to run
+#' @param simvar charackter element: name of the variable that contains the
+#' random effect we want to simulate along (e.g. subject number or stimuli number)
+#' in data
 #' @param steps vector of integers: steps for "simvar" you want to test power
 #' of
 #' @param critical_value integer: z/t value to test if a given fixed effect
 #' is significant
+#' @param n_sim integer: number of simulations to run
 #' @param confidence_level float: value between 0-1 indicating the width of the
 #' confidence interval used for the safeguard option
 #' @param databased logical value: indicates whether databased power simulation
