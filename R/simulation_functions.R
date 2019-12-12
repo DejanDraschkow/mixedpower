@@ -164,7 +164,7 @@ power_simulation <- function(model, data, simvar, fixed_effects,
   ## 1. create an empty data frame witg the right dimensions and names
   # dimension = ncol, nrow
   # [-1] removes the Intercept
-  n_row <- length(fixef(model)[-1])
+  n_row <- length(lme4::fixef(model)[-1])
   # n col
   n_col <- length(steps)
 
