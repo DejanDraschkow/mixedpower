@@ -404,3 +404,80 @@ simulateDataset <- function(n_want, data, model, simvar){
   # return final_data
   final_data
 }
+
+
+
+#-----------------------------------------------------------------------------#
+
+#' Simulate a new data set
+#'
+#' \code{simulateModel()} builds a new model set with a specified number of
+#' levels of a specified random effect. New data sets are simulated and
+#' averaged to return the average model for a specific sample size
+#'
+#' @param model lme4 model: starting mixed model used for simulation
+#' @param data data frame: data used to inform the simulation
+#' @param n_want integer: how many levels should the new model be based on?
+#' @param simvar character element: name of the varaible containing
+#' the random effect levels
+#'
+#' @return A modified mixed model
+#'
+#' @export
+
+
+simulateModel <- function(model, data, n_want, simvar, nsim = 100){
+
+  # ----- prepare ----- #
+
+  # PREPARE TO RUN IN PARALLEL
+  cores= parallel::detectCores()
+  cl <- parallel::makeCluster(cores[1]-1) #not to overload your computer
+  doParallel::registerDoParallel(cl)
+  `%dopar%` <- foreach::`%dopar%` # magic cheating
+
+  # prepare stpring coefficients and variances
+  coefs <- data.frame(matrix(ncol = nsim, nrow = length(lme4::fixef(model))))
+  theta <- data.frame(matrix(ncol = nsim, nrow = (nrow(as.data.frame(VarCorr(FLPmodel))["sdcor"])-1)))
+
+  # suimulate n sim data sets (run in parralel)
+
+  model_params <- foreach::foreach(iterators::icount(nsim), .combine = "cbind",
+                                   .export=ls(envir=globalenv()),
+                                   .packages = c("lme4"),
+                                   .inorder = FALSE) %dopar% {
+
+                                     # ----- simulate and update model ---- #
+
+                                     # simulate dataset:
+                                     sim_data <- simulateDataset(n_want, data, model, simvar)
+
+                                     # update model
+                                     sim_model <- update(model, data = sim_data)
+
+
+                                     # ----- store and average ----- #
+                                     # extract variances and coefficients and std and t values!
+                                     coefs <- sim_model@beta
+                                     theta <- sim_model@theta
+
+                                     to.model_params <- list(coefs, theta)
+
+                                   }
+
+  coefs <- as.data.frame(model_params[1,])
+  theta <- as.data.frame(model_params[2,])
+
+  # -------- average -------- #
+  mean_coefs <- rowMeans(coefs)
+  mean_theta <- rowMeans(theta)
+
+  # -------- prepare simulated model ----- #
+  model_return <- model
+  model_return@beta <- mean_coefs # assign new coeffs
+  model_return@theta <- mean_theta # assign new random variances
+
+  # return
+  model_return
+
+} # end function
