@@ -19,7 +19,7 @@
 #'
 #' @return A modified mixed model
 #'
-#' @export
+
 prepare_rnorm_model <- function(model, data, simvar, critical_value){
 
   # --------------------------------------------------------- #
@@ -99,7 +99,7 @@ prepare_rnorm_model <- function(model, data, simvar, critical_value){
 #'
 #' @return A modified mixed model
 #'
-#' @export
+
 prepare_safeguard_model <- function(model, confidence_level, critical_value){
 
   # ---------- prepare ------------------------ #
@@ -176,7 +176,7 @@ prepare_safeguard_model <- function(model, confidence_level, critical_value){
 #'
 #' @return Date frame
 #'
-#' @export
+
 reset_contrasts <- function(simulated_data, data, model, fixed_effects ) {
 
   # --> 1. get names from all variables in model
@@ -217,7 +217,7 @@ reset_contrasts <- function(simulated_data, data, model, fixed_effects ) {
 #'
 #' @return logical vector
 #'
-#' @export
+
 check_significance <- function(model, critical_value){
 
   store_significance <- c()
@@ -316,7 +316,7 @@ get_n <- function(data, simvar){
 #' the variable name of the dependent variable.
 #'
 #' @param model mixed model you want to know the dependent variable of
-#' @export
+
 get_depvar <- function(model){
 
   # 1. extract model formula and convert it to character
