@@ -122,7 +122,8 @@ power_simulation <- function(model, data, simvar, fixed_effects,
                                      model_for_simulation <- simulateModel(model,
                                                                            data,
                                                                            n_want = R2level,
-                                                                           simvar = R2var)
+                                                                           simvar = R2var,
+                                                                           fixed_effects)
                                    }
                                    #------------------------------------#
                                    #------------------------------------#
