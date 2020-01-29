@@ -45,8 +45,9 @@ mixedpower <- function(model, data, fixed_effects, simvar,
   # 1. databased
   if (databased == T){
     databased_power_values <- power_simulation(model, data, simvar, fixed_effects,
-                                               critical_value, steps, n_sim, confidence_level,
-                                               safeguard = F, rnorm = F)
+                                                critical_value, steps, n_sim, confidence_level,
+                                                safeguard = F, rnorm = F,
+                                                R2 = F, R2var = 0, R2level = 0) # assign those parameters anyways to avoid crashing
 
     # store output
     databased_power_values["mode"] <- "databased"
@@ -66,7 +67,8 @@ mixedpower <- function(model, data, fixed_effects, simvar,
     # run SESOI power analysis
     SESOI_power_values <- power_simulation(model, data, simvar, fixed_effects,
                                            critical_value, steps, n_sim, confidence_level,
-                                           safeguard = F, rnorm = F)
+                                           safeguard = F, rnorm = F,
+                                           R2 = F, R2var = 0, R2level = 0) # assign those parameters anyways to avoid crashing
 
     SESOI_power_values["mode"] <- "SESOI"
     #SESOI_power_values["effect"] <- row.names(SESOI_power_values)
@@ -140,7 +142,8 @@ R2power <- function(model, data, fixed_effects, simvar,
   if (databased == T){
     databased_power_values <- power_simulation(model, data, simvar, fixed_effects,
                                                critical_value, steps, n_sim, confidence_level,
-                                               safeguard = F, rnorm = F)
+                                               safeguard = F, rnorm = F,
+                                               R2 = T, R2var, R2level)
 
     # store output
     databased_power_values["mode"] <- "databased"
@@ -160,7 +163,8 @@ R2power <- function(model, data, fixed_effects, simvar,
     # run SESOI power analysis
     SESOI_power_values <- power_simulation(model, data, simvar, fixed_effects,
                                            critical_value, steps, n_sim, confidence_level,
-                                           safeguard = F, rnorm = F)
+                                           safeguard = F, rnorm = F,
+                                           R2 = T, R2var, R2level)
 
     SESOI_power_values["mode"] <- "SESOI"
     #SESOI_power_values["effect"] <- row.names(SESOI_power_values)
