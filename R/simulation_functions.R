@@ -349,7 +349,7 @@ simulateModel <- function(model, data, n_want, simvar, fixed_effects,  nsim = 1)
 
   # prepare stpring coefficients and variances
   coefs <- data.frame(matrix(ncol = nsim, nrow = length(lme4::fixef(model))))
-  theta <- data.frame(matrix(ncol = nsim, nrow = (nrow(as.data.frame(VarCorr(FLPmodel))["sdcor"])-1)))
+  theta <- data.frame(matrix(ncol = nsim, nrow = (nrow(as.data.frame(VarCorr(model))["sdcor"])-1)))
 
   # suimulate n sim data sets (run in parralel)
 
