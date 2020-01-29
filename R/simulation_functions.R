@@ -339,11 +339,6 @@ simulateDataset <- function(n_want, data, model, simvar){
 
 simulateModel <- function(model, data, n_want, simvar, fixed_effects){
 
-  # ----- prepare ----- #
-
-  # prepare stpring coefficients and variances
-  coefs <- data.frame(matrix(ncol = nsim, nrow = length(lme4::fixef(model))))
-  theta <- data.frame(matrix(ncol = nsim, nrow = (nrow(as.data.frame(VarCorr(model))["sdcor"])-1)))
 
   # ----- simulate and update model ---- #
   # simulate dataset:
