@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulation_functions.R
 \name{power_simulation}
 \alias{power_simulation}
-\title{Function that runs the power simulation}
+\title{Function trunning the actual power simulation}
 \usage{
 power_simulation(model, data, simvar, fixed_effects, critical_value, steps,
   n_sim, confidence_level, safeguard = F, rnorm = F, R2 = F, R2var,
@@ -32,6 +32,14 @@ shoul be run}
 \item{rnorm}{logical value: indicates whether rnorm power simulation
 shoul be run}
 
+\item{R2}{logical value: indicating if a R2 simulation should be run}
+
+\item{R2var}{character: name of second random effect we want to vary}
+
+\item{R2level}{integer: number of levels for R2var. Right now, the second
+random effect can only be changed to a fixed value and not be varied like
+simvar}
+
 \item{sampe_sizes}{vector of integers: sample sizes you want to test power
 of}
 }
@@ -40,6 +48,6 @@ A modified mixed model
 }
 \description{
 \code{power_simulation()} runs the actual simulation process for either the
-databased, safeguard or rnorm power option. Returns a data frame with results
+databased, SESOI, R2, safeguard or rnorm power option. Returns a data frame with results
 for all fixed effects and all tested sample sizes.
 }

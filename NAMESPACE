@@ -3,7 +3,7 @@
 export(R2power)
 export(get_n)
 export(mixedpower)
-export(mixedpower1)
+export(mixedpowerSR)
 export(multiplot)
 export(multiplotPower)
 export(power_simulation)

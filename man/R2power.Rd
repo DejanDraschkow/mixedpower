@@ -2,7 +2,7 @@
 % Please edit documentation in R/meta_functions.R
 \name{R2power}
 \alias{R2power}
-\title{Function thatr runs the whole mixedpower power process for two random effect}
+\title{Function running simulation for two varying random effect}
 \usage{
 R2power(model, data, fixed_effects, simvar, steps, R2var, R2level,
   critical_value, n_sim = 1000, SESOI = F, databased = T)
@@ -10,41 +10,38 @@ R2power(model, data, fixed_effects, simvar, steps, R2var, R2level,
 \arguments{
 \item{model}{lme4 model: mixed model of interest}
 
-\item{data}{data frame: pilot data that fits the mixed model of interest}
+\item{data}{data frame: data used to fit the mixed model of interest}
 
 \item{fixed_effects}{vector of character elements: names of variables that
- are used as fixed effects in
-model emp}
+are used as fixed effects in the used model}
 
-\item{simvar}{charackter element: name of the variable that contains the
+\item{simvar}{character element: name of the variable that contains the
 random effect we want to simulate along (e.g. subject number or stimuli number)
 in data}
 
 \item{steps}{vector of integers: steps for "simvar" you want to test power
 of}
 
+\item{R2var}{character: name of second random effect we want to vary}
+
+\item{R2level}{integer: number of levels for R2var. Right now, the second
+random effect can only be changed to a fixed value and not be varied like
+simvar}
+
 \item{critical_value}{integer: z/t value to test if a given fixed effect
 is significant}
 
 \item{n_sim}{integer: number of simulations to run}
 
-\item{databased}{logical value: indicates whether databased power simulation
-shoul be run}
+\item{SESOI}{vector with floats´indicating the desired SESOIs.
+If FALSE, no SESOI simulation is run.}
 
-\item{confidence_level}{float: value between 0-1 indicating the width of the
-confidence interval used for the safeguard option}
-
-\item{safeguard}{logical value: indicates whether safeguard power simulation
-shoul be run}
-
-\item{rnorm}{logical value: indicates whether rnorm power simulation
-shoul be run}
+\item{databased}{logical value: indicates whether databased power simulation}
 }
 \value{
 A modified mixed model
 }
 \description{
-\code{R2power()} combines all three power options (databased, safeguard,
-rnorm). It runs them all by default and returns a data frame with results
-for all three options.
+\code{mixedpower()} combines a databased and SESOI (smallest effect of interest)
+simulation for a combination of two specified randomeffects
 }

@@ -1,8 +1,8 @@
 
-#' Function that runs the power simulation
+#' Function trunning the actual power simulation
 #'
 #' \code{power_simulation()} runs the actual simulation process for either the
-#' databased, safeguard or rnorm power option. Returns a data frame with results
+#' databased, SESOI, R2, safeguard or rnorm power option. Returns a data frame with results
 #' for all fixed effects and all tested sample sizes.
 #'
 #' @param model lme4 model: mixed model of interest
@@ -22,6 +22,11 @@
 #' shoul be run
 #' @param rnorm logical value: indicates whether rnorm power simulation
 #' shoul be run
+#' @param R2 logical value: indicating if a R2 simulation should be run
+#' @param R2var character: name of second random effect we want to vary
+#' @param R2level integer: number of levels for R2var. Right now, the second
+#' random effect can only be changed to a fixed value and not be varied like
+#' simvar
 #' @return A modified mixed model
 #'
 #' @export
@@ -321,8 +326,7 @@ simulateDataset <- function(n_want, data, model, simvar){
 #' Simulate a new data set
 #'
 #' \code{simulateModel()} builds a new model set with a specified number of
-#' levels of a specified random effect. New data sets are simulated and
-#' averaged to return the average model for a specific sample size
+#' levels of a specified random effect.
 #'
 #' @param model lme4 model: starting mixed model used for simulation
 #' @param data data frame: data used to inform the simulation
@@ -330,8 +334,7 @@ simulateDataset <- function(n_want, data, model, simvar){
 #' @param simvar character element: name of the varaible containing
 #' the random effect levels
 #' @param fixed_effects vector containing variable names used as fixed effects
-#' @param nsim integer: number of simulations used to average over
-#'
+
 #' @return A modified mixed model
 #'
 #' @export

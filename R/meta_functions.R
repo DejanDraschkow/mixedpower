@@ -1,29 +1,35 @@
-#' Function thatr runs the whole mixedpower power process for one random effect
+# ------------------------------------------------------------------------------- #
+#         WRAPPING FUNCTIONS TO COMBINE AND RUN DIFFERENT SIMULATIONS
+# ------------------------------------------------------------------------------- #
+
+# 1. mixedpower: runs simulations while varying one random factor (SESOI and databased)
+# 2. R2power: runs simulatiosn while varying two random factors (SESOI and databased)
+# 3. mixedpowerSR: runs database, safeguard and rnorm simulations for one random factor
+#                  --> part of earlier version of mixedpower
+
+# ------------------------------------------------------------------------------- #
+
+#' Function running simulation for one varying random effect
 #'
-#' \code{mixedpower()} combines all three power options (databased, safeguard,
-#' rnorm). It runs them all by default and returns a data frame with results
-#' for all three options.
+#' \code{mixedpower()} combines a databased and SESOI (smallest effect of interest)
+#' simulation for one specified random effect
 #'
 #' @param model lme4 model: mixed model of interest
-#' @param data data frame: pilot data that fits the mixed model of interest
+#' @param data data frame: data used to fit the mixed model of interest
 #' @param fixed_effects vector of character elements: names of variables that
-#'  are used as fixed effects in
-#' model emp
-#' @param simvar charackter element: name of the variable that contains the
+#'  are used as fixed effects in the used model
+#' @param simvar character element: name of the variable that contains the
 #' random effect we want to simulate along (e.g. subject number or stimuli number)
-#' in data
-#' @param steps vector of integers: steps for "simvar" you want to test power
-#' of
+#' in the used data frame
+#' @param steps vector of integers: steps of "simvar" you want to test power
+#' of (e.g. different sample sizes)
 #' @param critical_value integer: z/t value to test if a given fixed effect
-#' is significant
+#' is significant. This can be a single value or a vector containing specific
+#' critical values for each effect
 #' @param n_sim integer: number of simulations to run
-#' @param confidence_level float: value between 0-1 indicating the width of the
-#' confidence interval used for the safeguard option
+#' @param SESOI vector with floats´indicating the desired SESOIs.
+#' If FALSE, no SESOI simulation is run.
 #' @param databased logical value: indicates whether databased power simulation
-#' shoul be run
-#' @param safeguard logical value: indicates whether safeguard power simulation
-#' shoul be run
-#' @param rnorm logical value: indicates whether rnorm power simulation
 #' shoul be run
 #' @return A modified mixed model
 #'
@@ -94,33 +100,31 @@ mixedpower <- function(model, data, fixed_effects, simvar,
 
 # ------------------------------------------------------------------------------- #
 
-#' Function thatr runs the whole mixedpower power process for two random effect
+#' Function running simulation for two varying random effect
 #'
-#' \code{R2power()} combines all three power options (databased, safeguard,
-#' rnorm). It runs them all by default and returns a data frame with results
-#' for all three options.
+#' \code{mixedpower()} combines a databased and SESOI (smallest effect of interest)
+#' simulation for a combination of two specified randomeffects
 #'
 #' @param model lme4 model: mixed model of interest
-#' @param data data frame: pilot data that fits the mixed model of interest
+#' @param data data frame: data used to fit the mixed model of interest
 #' @param fixed_effects vector of character elements: names of variables that
-#'  are used as fixed effects in
-#' model emp
-#' @param simvar charackter element: name of the variable that contains the
+#'  are used as fixed effects in the used model
+#' @param simvar character element: name of the variable that contains the
 #' random effect we want to simulate along (e.g. subject number or stimuli number)
 #' in data
 #' @param steps vector of integers: steps for "simvar" you want to test power
 #' of
+#' @param R2var character: name of second random effect we want to vary
+#' @param R2level integer: number of levels for R2var. Right now, the second
+#' random effect can only be changed to a fixed value and not be varied like
+#' simvar
 #' @param critical_value integer: z/t value to test if a given fixed effect
 #' is significant
 #' @param n_sim integer: number of simulations to run
-#' @param confidence_level float: value between 0-1 indicating the width of the
-#' confidence interval used for the safeguard option
+#' @param SESOI vector with floats´indicating the desired SESOIs.
+#' If FALSE, no SESOI simulation is run.
 #' @param databased logical value: indicates whether databased power simulation
-#' shoul be run
-#' @param safeguard logical value: indicates whether safeguard power simulation
-#' shoul be run
-#' @param rnorm logical value: indicates whether rnorm power simulation
-#' shoul be run
+
 #' @return A modified mixed model
 #'
 #' @export
@@ -191,7 +195,7 @@ R2power <- function(model, data, fixed_effects, simvar,
 
 
 
-#' Function thatr runs the whole mixedpower power process
+#' Function that runs the whole mixedpower power process
 #'
 #' \code{mixedpower()} combines all three power options (databased, safeguard,
 #' rnorm). It runs them all by default and returns a data frame with results
@@ -221,7 +225,7 @@ R2power <- function(model, data, fixed_effects, simvar,
 #' @return A modified mixed model
 #'
 #' @export
-mixedpower1 <- function(model, data, fixed_effects, simvar,
+mixedpowerSR <- function(model, data, fixed_effects, simvar,
                         steps, critical_value, n_sim = 1000, confidence_level= 0.68,
                         databased = T, safeguard = F, rnorm = F){
 
