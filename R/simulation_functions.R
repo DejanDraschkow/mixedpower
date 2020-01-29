@@ -108,7 +108,7 @@ power_simulation <- function(model, data, simvar, fixed_effects,
     # magic cheating
     `%dopar%` <- foreach::`%dopar%`
     #okay now continue
-    store_simulations <- foreach::foreach(iterators::icount(n_sim), .combine = "cbind",
+    store_simulations <- suppressWarnings(foreach::foreach(iterators::icount(n_sim), .combine = "cbind",
                                           .export=ls(envir=globalenv()),
                                           .packages = c("lme4")) %dopar% {
 
@@ -132,7 +132,7 @@ power_simulation <- function(model, data, simvar, fixed_effects,
                                    }
                                    #------------------------------------#
                                    #------------------------------------#
-                                   print("1.")
+
                                    #-------------------------------------#
                                    # 1. simulate data set with n subjects
                                    simulated_data <- simulateDataset(n_want = n,
@@ -165,7 +165,7 @@ power_simulation <- function(model, data, simvar, fixed_effects,
                                    to.store_simulations <- check_significance(model_sim,
                                                                               critical_value)
 
-                                 }# end for loop (n_sim)
+                                 })# end for loop (n_sim))
 
     # -------------------------------------#
     # 5. compute power
