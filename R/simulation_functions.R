@@ -337,63 +337,39 @@ simulateDataset <- function(n_want, data, model, simvar){
 #' @export
 
 
-simulateModel <- function(model, data, n_want, simvar, fixed_effects,  nsim = 1){
+simulateModel <- function(model, data, n_want, simvar, fixed_effects){
 
   # ----- prepare ----- #
-
-  # PREPARE TO RUN IN PARALLEL
-  cores= parallel::detectCores()
-  cl <- parallel::makeCluster(cores[1]-1) #not to overload your computer
-  doParallel::registerDoParallel(cl)
-  `%dopar%` <- foreach::`%dopar%` # magic cheating
 
   # prepare stpring coefficients and variances
   coefs <- data.frame(matrix(ncol = nsim, nrow = length(lme4::fixef(model))))
   theta <- data.frame(matrix(ncol = nsim, nrow = (nrow(as.data.frame(VarCorr(model))["sdcor"])-1)))
 
-  # suimulate n sim data sets (run in parralel)
-
-  model_params <- foreach::foreach(iterators::icount(nsim), .combine = "cbind",
-                                   .export=ls(envir=globalenv()),
-                                   .packages = c("lme4"),
-                                   .inorder = FALSE) %dopar% {
-
-                                     # ----- simulate and update model ---- #
-
-                                     # simulate dataset:
-                                     sim_data <- simulateDataset(n_want, data, model, simvar)
+  # ----- simulate and update model ---- #
+  # simulate dataset:
+  sim_data <- simulateDataset(n_want, data, model, simvar)
 
 
-                                     # reset contrasts
-                                     sim_data <- reset_contrasts(sim_data,
-                                                                      data,
-                                                                      model,
-                                                                      fixed_effects)
+  # reset contrasts
+  sim_data <- reset_contrasts(sim_data,
+                                    data,
+                                    model,
+                                    fixed_effects)
 
-                                     # update model
-                                     sim_model <- update(model, data = sim_data)
+  # update model
+  sim_model <- update(model, data = sim_data)
 
 
-                                     # ----- store and average ----- #
-                                     # extract variances and coefficients and std and t values!
-                                     coefs <- sim_model@beta
-                                     theta <- sim_model@theta
+  # ----- store and average ----- #
+  # extract variances and coefficients and std and t values!
+  coefs <- sim_model@beta
+  theta <- sim_model@theta
 
-                                     to.model_params <- list(coefs, theta)
-
-                                   }
-
-  coefs <- as.data.frame(model_params[1,])
-  theta <- as.data.frame(model_params[2,])
-
-  # -------- average -------- #
-  mean_coefs <- rowMeans(coefs)
-  mean_theta <- rowMeans(theta)
 
   # -------- prepare simulated model ----- #
   model_return <- model
-  model_return@beta <- mean_coefs # assign new coeffs
-  model_return@theta <- mean_theta # assign new random variances
+  model_return@beta <- coefs # assign new coeffs
+  model_return@theta <- theta # assign new random variances
 
   # return
   model_return
