@@ -289,3 +289,5 @@ mixedpower1 <- function(model, data, fixed_effects, simvar,
   results
 
 } # end function
+
+

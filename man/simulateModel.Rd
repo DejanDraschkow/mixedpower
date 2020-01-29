@@ -4,7 +4,7 @@
 \alias{simulateModel}
 \title{Simulate a new data set}
 \usage{
-simulateModel(model, data, n_want, simvar, nsim = 100)
+simulateModel(model, data, n_want, simvar, fixed_effects, nsim = 1)
 }
 \arguments{
 \item{model}{lme4 model: starting mixed model used for simulation}
@@ -15,6 +15,10 @@ simulateModel(model, data, n_want, simvar, nsim = 100)
 
 \item{simvar}{character element: name of the varaible containing
 the random effect levels}
+
+\item{fixed_effects}{vector containing variable names used as fixed effects}
+
+\item{nsim}{integer: number of simulations used to average over}
 }
 \value{
 A modified mixed model

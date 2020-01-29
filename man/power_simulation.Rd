@@ -5,7 +5,8 @@
 \title{Function that runs the power simulation}
 \usage{
 power_simulation(model, data, simvar, fixed_effects, critical_value, steps,
-  n_sim, confidence_level, safeguard = F, rnorm = F)
+  n_sim, confidence_level, safeguard = F, rnorm = F, R2 = F, R2var,
+  R2level)
 }
 \arguments{
 \item{model}{lme4 model: mixed model of interest}

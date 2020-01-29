@@ -127,7 +127,7 @@ power_simulation <- function(model, data, simvar, fixed_effects,
                                    }
                                    #------------------------------------#
                                    #------------------------------------#
-
+                                   print("1.")
                                    #-------------------------------------#
                                    # 1. simulate data set with n subjects
                                    simulated_data <- simulateDataset(n_want = n,
@@ -316,8 +316,6 @@ simulateDataset <- function(n_want, data, model, simvar){
 }
 
 
-
-# OLD UNUSED FUNCTIONS
 #-----------------------------------------------------------------------------#
 
 #' Simulate a new data set
