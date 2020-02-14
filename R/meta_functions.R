@@ -57,7 +57,7 @@ mixedpower <- function(model, data, fixed_effects, simvar,
 
     # store output
     databased_power_values["mode"] <- "databased"
-    #databased_power_values["effect"] <- row.names(databased_power_values)
+    databased_power_values["effect"] <- row.names(databased_power_values)
 
     output[[i]] <- databased_power_values
     i <- i + 1 # increment i so the next output gets stored at the right position
@@ -77,7 +77,7 @@ mixedpower <- function(model, data, fixed_effects, simvar,
                                            R2 = F, R2var = 0, R2level = 0) # assign those parameters anyways to avoid crashing
 
     SESOI_power_values["mode"] <- "SESOI"
-    #SESOI_power_values["effect"] <- row.names(SESOI_power_values)
+    SESOI_power_values["effect"] <- row.names(SESOI_power_values)
     output[[i]] <- SESOI_power_values
 
   } # end if rnorm
@@ -151,7 +151,7 @@ R2power <- function(model, data, fixed_effects, simvar,
 
     # store output
     databased_power_values["mode"] <- "databased"
-    #databased_power_values["effect"] <- row.names(databased_power_values)
+    databased_power_values["effect"] <- row.names(databased_power_values)
 
     output[[i]] <- databased_power_values
     i <- i + 1 # increment i so the next output gets stored at the right position
@@ -171,7 +171,7 @@ R2power <- function(model, data, fixed_effects, simvar,
                                            R2 = T, R2var, R2level)
 
     SESOI_power_values["mode"] <- "SESOI"
-    #SESOI_power_values["effect"] <- row.names(SESOI_power_values)
+    SESOI_power_values["effect"] <- row.names(SESOI_power_values)
     output[[i]] <- SESOI_power_values
 
   } # end if rnorm
