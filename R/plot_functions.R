@@ -61,7 +61,7 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 #'
 #' @export
 
-multiplotPower <- function(output_data, ppi = 300){
+multiplotPower <- function(output_data, ppi = 300, filename = F){
   # ------------------------------------------#
   ## 1. prepare output for plotting
   plot_data_all <- reshape2::melt(output_data,
@@ -117,7 +117,12 @@ multiplotPower <- function(output_data, ppi = 300){
   } else {
     nrow = floor(effect_num/3) + 1
   }
-  png("multiplot_powerSimulation.png", width=12*ppi, height=8*ppi, bg = "transparent", res=ppi)
+
+  # allow for custom filename
+  if (filename == F){
+     filename <- "multiplot_powerSimulation.png"
+  }
+  png(filename, width=12*ppi, height=8*ppi, bg = "transparent", res=ppi)
   struct <- matrix(seq(1,nrow*ncol), ncol = ncol, nrow = nrow)
   multiplot(plotlist = all_plots, layout = struct)
   dev.off()
