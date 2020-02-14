@@ -122,7 +122,7 @@ multiplotPower <- function(output_data, ppi = 300, filename = F){
   if (filename == F){
      filename <- "multiplot_powerSimulation.png"
   }
-  png(filename, width=12*ppi, height=8*ppi, bg = "transparent", res=ppi)
+  png(filename, width=12*ppi, height=3*nrow*ppi, bg = "transparent", res=ppi)
   struct <- matrix(seq(1,nrow*ncol), ncol = ncol, nrow = nrow)
   multiplot(plotlist = all_plots, layout = struct)
   dev.off()
