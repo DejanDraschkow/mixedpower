@@ -90,7 +90,7 @@ power_simulation <- function(model, data, simvar, fixed_effects,
   for (n in steps){
 
     # inform which sample sizes we are computing power right now
-    print("Estimating power for sample size:")
+    print("Estimating power for step:")
     print(n)
 
     index_n <- index_n + 1
