@@ -127,16 +127,19 @@ power_simulation <- function(model, data, simvar, fixed_effects,
 
                                      # ----- simulate and update model to R2 level ---- #
                                      # simulate dataset:
-                                     data <- simulateDataset(n_want = R2level,
+                                     sim_data <- simulateDataset(n_want = R2level,
                                                              data, model,
                                                              simvar = R2var)
 
 
                                      # reset contrasts
-                                     data <- reset_contrasts(sim_data,
+                                     sim_data <- reset_contrasts(sim_data,
                                                                  data,
                                                                  model,
                                                                  fixed_effects)
+
+                                     # reassign sim_data as data
+                                     data <- sim_data
 
                                      # update model
                                      model_for_simulation <- update(model, data = data)
