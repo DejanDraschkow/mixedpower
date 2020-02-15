@@ -357,20 +357,21 @@ simulateModel <- function(model, data, n_want, simvar, fixed_effects){
   # update model
   sim_model <- update(model, data = sim_data)
 
-
+  # WHY TF AM I DOING THIS?!
   # ----- store and average ----- #
   # extract variances and coefficients and std and t values!
-  coefs <- sim_model@beta
-  theta <- sim_model@theta
+  #coefs <- sim_model@beta
+  #theta <- sim_model@theta
 
 
   # -------- prepare simulated model ----- #
-  model_return <- model
-  model_return@beta <- coefs # assign new coeffs
-  model_return@theta <- theta # assign new random variances
+  #model_return <- model
+  #model_return@beta <- coefs # assign new coeffs
+  #model_return@theta <- theta # assign new random variances
 
   # return
-  model_return
+  #model_return
+  sim_model
 
 } # end function
 
