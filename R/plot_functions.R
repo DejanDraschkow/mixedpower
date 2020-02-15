@@ -91,7 +91,7 @@ multiplotPower <- function(output_data, ppi = 300, filename = F){
     p <- ggplot2::ggplot(plot_data, ggplot2::aes(x = sample_size, y = value, color=mode, group = mode)) + # basic graph
       ggplot2::geom_point() + # add points
       ggplot2::geom_line()+
-      ggplot2::xlab("sample size") + ggplot2::ylab("power") +  # change name of x and y axes
+      ggplot2::xlab("step size") + ggplot2::ylab("power") +  # change name of x and y axes
       ggplot2::theme(axis.line = ggplot2::element_line(color = "black"), # axis line
             panel.background = ggplot2::element_rect(fill = "white"), # background
             legend.title = ggplot2::element_blank()) + # remove legend title
