@@ -104,6 +104,7 @@ power_simulation <- function(model, data, simvar, fixed_effects,
     # repeat simulation n_sim times
     # store outcome in store_simulations
     # --> this is a list of vectors!!
+    sim_data <- data # assign this for no-R2 cases
 
     # magic cheating
     `%dopar%` <- foreach::`%dopar%`
@@ -139,30 +140,31 @@ power_simulation <- function(model, data, simvar, fixed_effects,
                                                                  fixed_effects)
 
                                      # reassign sim_data as data
-                                     data <- sim_data
+
 
                                      # update model
-                                     model_for_simulation <- update(model, data = data)
+                                     model_for_simulation <- update(model, data = sim_data)
 
 
 
 
 
                                    }
+
                                    #------------------------------------#
                                    #------------------------------------#
 
                                    #-------------------------------------#
                                    # 1. simulate data set with n subjects
                                    simulated_data <- simulateDataset(n_want = n,
-                                                                        data = data,
+                                                                        data = sim_data,
                                                                         model = model_for_simulation,
                                                                         simvar = simvar)
 
                                    #------------------------------------#
                                    #2. code contrasts for simulated data set
                                    final_dataset <- reset_contrasts(simulated_data,
-                                                                    data,
+                                                                    sim_data,
                                                                     model,
                                                                     fixed_effects)
 
