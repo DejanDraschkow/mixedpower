@@ -124,32 +124,6 @@ power_simulation <- function(model, data, simvar, fixed_effects,
                                                                                  critical_value)
                                    }
 
-                                   if (R2 == T){
-
-                                     # ----- simulate and update model to R2 level ---- #
-                                     # simulate dataset:
-                                     sim_data <- simulateDataset(n_want = R2level,
-                                                             data, model,
-                                                             simvar = R2var)
-
-
-                                     # reset contrasts
-                                     sim_data <- reset_contrasts(sim_data,
-                                                                 data,
-                                                                 model,
-                                                                 fixed_effects)
-
-                                     # reassign sim_data as data
-
-
-                                     # update model
-                                     model_for_simulation <- update(model, data = sim_data)
-
-
-
-
-
-                                   }
 
                                    #------------------------------------#
                                    #------------------------------------#
@@ -174,6 +148,31 @@ power_simulation <- function(model, data, simvar, fixed_effects,
                                    # --> update model emp with new data set
                                    model_sim <- update(model,
                                                        data = final_dataset)
+
+                                   if (R2 == T){
+
+                                     # ----- simulate and update model to R2 level ---- #
+                                     # simulate dataset:
+                                     sim_data <- simulateDataset(n_want = R2level,
+                                                                 final_dataset, model_sim,
+                                                                 simvar = R2var,
+                                                                 use_u = T)
+
+
+                                     # reset contrasts
+                                     sim_data <- reset_contrasts(sim_data,
+                                                                 data,
+                                                                 model,
+                                                                 fixed_effects)
+
+                                     # reassign sim_data as data
+
+
+                                     # update model
+                                     model_sim <- update(model_sim, data = sim_data)
+
+                                   }
+
 
                                    #-------------------------------------#
                                    # 4. analyze final_data set and store result
@@ -234,7 +233,7 @@ power_simulation <- function(model, data, simvar, fixed_effects,
 #'
 #' @export
 
-simulateDataset <- function(n_want, data, model, simvar){
+simulateDataset <- function(n_want, data, model, simvar, use_u = F){
   # ---------------------------------------------------------------------------- #
   # STEP 1: set relevant paramaters
 
@@ -257,8 +256,23 @@ simulateDataset <- function(n_want, data, model, simvar){
   # simulate (mult_factor) data sets
   for (i in 1:mult_factor){
 
+    # of use_u is FALSE: set it to TRUE in second simulation to have data set with one
+    # draw of random factors (if TRUE, keep it at TRUE the whole time )
+    if (use_u == FALSE){
+      # make sure
+      if (i == 1){
+        use_u <- FALSE
+        model_sim <- model
+      }else if(i == 2) {
+        use_u = TRUE
+        model_sim <- update(model, data = final_data)
+      }  # everything greater than 2 will use first parameter specifications
+    }
+
     # simuate new data --> variable of interest
-    new_subject_data <- lme4:::simulate.merMod(model, nsim = 1)
+    new_subject_data <- lme4:::simulate.merMod(model_sim, nsim = 1, use.u = use_u)
+
+
 
     ###--- create new data set: rename vp variable and replace variable of interest with simulated data--- ##
     # copy old data set
