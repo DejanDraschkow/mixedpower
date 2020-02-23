@@ -253,24 +253,11 @@ simulateDataset <- function(n_want, data, model, simvar, use_u = F){
   # --------------------------------------------------------------------------- #
   # STEP 2: sumulate data set
 
+  sim_data <- lme4:::simulate.merMod(model, nsim = mult_factor, use.u = use_u)
+
+
   # simulate (mult_factor) data sets
   for (i in 1:mult_factor){
-
-    # of use_u is FALSE: set it to TRUE in second simulation to have data set with one
-    # draw of random factors (if TRUE, keep it at TRUE the whole time )
-    if (use_u == FALSE){
-      # make sure
-      if (i == 1){
-        use_u <- FALSE
-        model_sim <- model
-      }else if(i == 2) {
-        use_u = TRUE
-        model_sim <- update(model, data = final_data)
-      }  # everything greater than 2 will use first parameter specifications
-    }
-
-    # simuate new data --> variable of interest
-    new_subject_data <- lme4:::simulate.merMod(model_sim, nsim = 1, use.u = use_u)
 
 
 
@@ -282,7 +269,7 @@ simulateDataset <- function(n_want, data, model, simvar, use_u = F){
 
     # first iteration: only change variable of interest
     if (i==1){
-      new_part[[depvar]] <- new_subject_data[,1]
+      new_part[[depvar]] <- sim_data[[i]]
       final_data <- new_part
       # from second iteration on: change subject names and rbind new data to existing data
     } else {
@@ -311,7 +298,7 @@ simulateDataset <- function(n_want, data, model, simvar, use_u = F){
 
 
       # 2. replace variable of interest
-      new_part[[depvar]] <- new_subject_data[,1]
+      new_part[[depvar]] <- sim_data[[i]]
 
       # 3. combine new and old data set
       # --> if first iteration: nothing to rbind, so just new_part it is
