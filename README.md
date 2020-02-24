@@ -1,6 +1,6 @@
 # mixedpower
 
-A package for pilot data based simulations for estimationg power in linear mixed models
+A package for simulation-based power analyses in (generalized) linear mixed models
 
 ## Getting started
 
@@ -14,6 +14,10 @@ To set up mixedpower, copy this bit of code and run in in your R-environment:
 
    devtools::install_github("DejanDraschkow/mixedpower") 
 ```
+
+### 2. Documentation
+
+Details to functions included in mixedpower can be found in the [mixedpower documentation](https://lkumle.github.io/power_notebooks/intro/Introduction_to_mixedpower.pdf)
 
 
 
