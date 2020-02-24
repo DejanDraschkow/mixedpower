@@ -36,6 +36,7 @@ power_simulation <- function(model, data, simvar, fixed_effects,
                              R2 = F, R2var, R2level){
 
 
+
   # PREPARE:
   # get depvar from model to hand it siimulateSamplesize() later
   depvar <- get_depvar(model)
@@ -104,7 +105,6 @@ power_simulation <- function(model, data, simvar, fixed_effects,
     # repeat simulation n_sim times
     # store outcome in store_simulations
     # --> this is a list of vectors!!
-    sim_data <- data # assign this for no-R2 cases
 
     # magic cheating
     `%dopar%` <- foreach::`%dopar%`
@@ -129,16 +129,17 @@ power_simulation <- function(model, data, simvar, fixed_effects,
                                    #------------------------------------#
 
                                    #-------------------------------------#
+
                                    # 1. simulate data set with n subjects
                                    simulated_data <- simulateDataset(n_want = n,
-                                                                        data = sim_data,
+                                                                        data = data,
                                                                         model = model_for_simulation,
                                                                         simvar = simvar)
 
                                    #------------------------------------#
                                    #2. code contrasts for simulated data set
                                    final_dataset <- reset_contrasts(simulated_data,
-                                                                    sim_data,
+                                                                    data,
                                                                     model,
                                                                     fixed_effects)
 
@@ -146,21 +147,23 @@ power_simulation <- function(model, data, simvar, fixed_effects,
                                    #-------------------------------------#
                                    # 3. refit model to current data set (final_dataset)
                                    # --> update model emp with new data set
-                                   model_sim <- update(model,
+                                   model_final <- update(model,
                                                        data = final_dataset)
 
                                    if (R2 == T){
 
                                      # ----- simulate and update model to R2 level ---- #
                                      # simulate dataset:
-                                     sim_data <- simulateDataset(n_want = R2level,
-                                                                 final_dataset, model_sim,
+
+
+                                     sim_data2 <- simulateDataset(n_want = R2level,
+                                                                 final_dataset, model_final,
                                                                  simvar = R2var,
                                                                  use_u = T)
 
 
                                      # reset contrasts
-                                     sim_data <- reset_contrasts(sim_data,
+                                     sim_data2 <- reset_contrasts(sim_data2,
                                                                  data,
                                                                  model,
                                                                  fixed_effects)
@@ -169,7 +172,7 @@ power_simulation <- function(model, data, simvar, fixed_effects,
 
 
                                      # update model
-                                     model_sim <- update(model_sim, data = sim_data)
+                                     model_R2_final <- update(model, data = sim_data2)
 
                                    }
 
@@ -182,8 +185,14 @@ power_simulation <- function(model, data, simvar, fixed_effects,
                                    # check significance
                                    # --> check_significance() returns 1 if effect is significant, 0 if not
                                    # --> store significance in specified vector
-                                   to.store_simulations <- check_significance(model_sim,
-                                                                              critical_value)
+                                   if (R2 == F){
+                                     to.store_simulations <- check_significance(model_final,
+                                                                                critical_value)
+                                   } else {
+                                     to.store_simulations <- check_significance(model_R2_final,
+                                                                                critical_value)
+                                   }
+
 
                                  })# end for loop (n_sim))
 
