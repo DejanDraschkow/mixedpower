@@ -174,6 +174,9 @@ power_simulation <- function(model, data, simvar, fixed_effects,
                                      # update model
                                      model_R2_final <- update(model, data = sim_data2)
 
+                                     # keep beta coeficcients from first simulation
+                                     model_R2_final@beta <- model_final@beta
+
                                    }
 
 
