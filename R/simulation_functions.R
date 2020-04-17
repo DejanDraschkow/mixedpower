@@ -265,7 +265,7 @@ simulateDataset <- function(n_want, data, model, simvar, use_u = F){
   # --------------------------------------------------------------------------- #
   # STEP 2: sumulate data set
 
-  sim_data <- lme4:::simulate.merMod(model, nsim = mult_factor, use.u = use_u)
+  sim_data <- lme4:::simulate.merMod(model, nsim = mult_factor, use.u = use_u, na.action = na.exclude)
 
 
   # simulate (mult_factor) data sets
