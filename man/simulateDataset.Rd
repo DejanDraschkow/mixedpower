@@ -4,7 +4,7 @@
 \alias{simulateDataset}
 \title{Simulate a new data set}
 \usage{
-simulateDataset(n_want, data, model, simvar, use_u = F)
+simulateDataset(n_want, data, model, simvar, fixed_effects, use_u = F)
 }
 \arguments{
 \item{n_want}{integer: how many subjects should the new data set include?}
@@ -13,7 +13,9 @@ simulateDataset(n_want, data, model, simvar, use_u = F)
 
 \item{model}{lme4 model: mixed model of interest}
 
-\item{simvar}{character element: name of the varaible containing the subject
+\item{simvar}{character element: name of the varaible containing the subject}
+
+\item{fixed_effects}{fixed effects specified in model
 number in data}
 }
 \value{

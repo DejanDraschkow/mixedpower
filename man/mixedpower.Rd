@@ -4,8 +4,17 @@
 \alias{mixedpower}
 \title{Function running simulation for one varying random effect}
 \usage{
-mixedpower(model, data, fixed_effects, simvar, steps, critical_value,
-  n_sim = 1000, SESOI = F, databased = T)
+mixedpower(
+  model,
+  data,
+  fixed_effects,
+  simvar,
+  steps,
+  critical_value,
+  n_sim = 1000,
+  SESOI = F,
+  databased = T
+)
 }
 \arguments{
 \item{model}{lme4 model: mixed model of interest}

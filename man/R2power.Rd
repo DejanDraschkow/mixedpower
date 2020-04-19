@@ -4,8 +4,19 @@
 \alias{R2power}
 \title{Function running simulation for two varying random effect}
 \usage{
-R2power(model, data, fixed_effects, simvar, steps, R2var, R2level,
-  critical_value, n_sim = 1000, SESOI = F, databased = T)
+R2power(
+  model,
+  data,
+  fixed_effects,
+  simvar,
+  steps,
+  R2var,
+  R2level,
+  critical_value,
+  n_sim = 1000,
+  SESOI = F,
+  databased = T
+)
 }
 \arguments{
 \item{model}{lme4 model: mixed model of interest}

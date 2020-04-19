@@ -4,9 +4,19 @@
 \alias{mixedpowerSR}
 \title{Function that runs the whole mixedpower power process}
 \usage{
-mixedpowerSR(model, data, fixed_effects, simvar, steps, critical_value,
-  n_sim = 1000, confidence_level = 0.68, databased = T,
-  safeguard = F, rnorm = F)
+mixedpowerSR(
+  model,
+  data,
+  fixed_effects,
+  simvar,
+  steps,
+  critical_value,
+  n_sim = 1000,
+  confidence_level = 0.68,
+  databased = T,
+  safeguard = F,
+  rnorm = F
+)
 }
 \arguments{
 \item{model}{lme4 model: mixed model of interest}

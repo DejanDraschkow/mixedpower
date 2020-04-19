@@ -4,9 +4,21 @@
 \alias{power_simulation}
 \title{Function trunning the actual power simulation}
 \usage{
-power_simulation(model, data, simvar, fixed_effects, critical_value, steps,
-  n_sim, confidence_level, safeguard = F, rnorm = F, R2 = F, R2var,
-  R2level)
+power_simulation(
+  model,
+  data,
+  simvar,
+  fixed_effects,
+  critical_value,
+  steps,
+  n_sim,
+  confidence_level,
+  safeguard = F,
+  rnorm = F,
+  R2 = F,
+  R2var,
+  R2level
+)
 }
 \arguments{
 \item{model}{lme4 model: mixed model of interest}
