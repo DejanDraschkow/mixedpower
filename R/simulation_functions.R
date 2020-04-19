@@ -134,7 +134,8 @@ power_simulation <- function(model, data, simvar, fixed_effects,
                                    simulated_data <- simulateDataset(n_want = n,
                                                                         data = data,
                                                                         model = model_for_simulation,
-                                                                        simvar = simvar)
+                                                                        simvar = simvar,
+                                                                        fixed_effects= fixed_effects)
 
                                    #------------------------------------#
                                    #2. code contrasts for simulated data set
@@ -159,6 +160,7 @@ power_simulation <- function(model, data, simvar, fixed_effects,
                                      sim_data2 <- simulateDataset(n_want = R2level,
                                                                  final_dataset, model_final,
                                                                  simvar = R2var,
+                                                                 fixed_effects= fixed_effects,
                                                                  use_u = T)
 
 
@@ -239,13 +241,14 @@ power_simulation <- function(model, data, simvar, fixed_effects,
 #' @param data data frame: pilot data that fits the mixed model of interest
 #' @param model lme4 model: mixed model of interest
 #' @param simvar character element: name of the varaible containing the subject
+#' @param fixed_effects fixed effects specified in model
 #' number in data
 #'
 #' @return A modified mixed model
 #'
 #' @export
 
-simulateDataset <- function(n_want, data, model, simvar, use_u = F){
+simulateDataset <- function(n_want, data, model, simvar, fixed_effects, use_u = F){
   # ---------------------------------------------------------------------------- #
   # STEP 1: set relevant paramaters
 
@@ -376,7 +379,7 @@ simulateModel <- function(model, data, n_want, simvar, fixed_effects){
 
   # ----- simulate and update model ---- #
   # simulate dataset:
-  sim_data <- simulateDataset(n_want, data, model, simvar)
+  sim_data <- simulateDataset(n_want, data, model, simvar, fixed_effects)
 
 
   # reset contrasts
