@@ -57,7 +57,7 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 #'
 #' @param output_data data frame returned from \code{fullpower} function
 #' @param ppi resolution of plot. default is 300
-#'
+#' @param filename custom file name for plot
 #'
 #' @export
 

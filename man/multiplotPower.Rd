@@ -4,12 +4,14 @@
 \alias{multiplotPower}
 \title{Multiple plot function to plot the mmpower output}
 \usage{
-multiplotPower(output_data, ppi = 300)
+multiplotPower(output_data, ppi = 300, filename = F)
 }
 \arguments{
 \item{output_data}{data frame returned from \code{fullpower} function}
 
 \item{ppi}{resolution of plot. default is 300}
+
+\item{filename}{custom file name for plot}
 }
 \description{
 \code{multiplotPower(output_data, ppi = 300)} plots the output for every
