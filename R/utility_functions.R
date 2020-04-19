@@ -331,3 +331,108 @@ get_depvar <- function(model){
 
 } # end function depvar
 
+#-------------------------------------------------------------------------------------------------------#
+# GET DEPVAR FUNCTION
+
+#' keeps balance of groups in designs with between-subject variables
+#'
+#'
+#' @param final_data simulated data
+#' @param simvar variable that is changed in simulation process
+#' @param fixed_effects fixed effects in model used to simulate data
+#' @param n_want levels of simvar the data should have
+
+keep_balance <- function(final_data, simvar, fixed_effects, n_want){
+
+  # --------------------------------- #
+  # 1. FIND BETWEEN SUBJECT VARIABLES
+  between <- c()
+  for(column in fixed_effects){
+
+    # go through subjects and check if subjects: only one value per subject per condition --> between
+    for (sub in unique(final_data[[simvar]])){
+      add <- ifelse(length(unique(final_data[final_data[[simvar]] == sub,][[column]])) == 1, T, F)}
+
+    # store between variables
+    between <- c(between, if(add == T){column})
+  }
+
+  # ------------------------- #
+  # BETWEEN DESIGNS
+  # ------------------------- #
+
+  if(length(between) > 0){
+
+    # --------------------------------- #
+    # 2. GET ALL COMBINATIONS OF BETWEEN SUBJECT VARIABLES
+    # --> get overview which subject is in which combination
+
+    # get all combinations of all levels for all between subject variables
+    combinations <- expand.grid(sapply(subset(final_data, select = between), levels))
+
+    # --------------------------------- #
+    # 3. CHECK WHICH SUBJECTS ARE IN WHICH COMBINATION
+    # --> get overview which subject is in which combination
+    sub_groups <- list()
+    # loop through combinations of combinations
+    for (cond_comb in 1:nrow(combinations)){
+
+      # A. create nested list to store subjects in them
+      sub_groups[cond_comb] <- c(NaN) # doesn't work with empty vector
+
+      # B. loop through all subjects and store the ones that are in current combination
+      for (sub in unique(final_data[[simvar]])){
+        group <- unique(subset(final_data[final_data[[simvar]] == sub,], select = between))
+
+        # C. check if subject is in current  combination
+        if(length(between) == 1){
+          if(sum(combinations[cond_comb,] == group[[1]]) == length(between)){
+            sub_groups[[cond_comb]] <- c(sub_groups[[cond_comb]], sub)}
+        } else {
+          if(sum(combinations[cond_comb,] == group) == length(between)){
+            sub_groups[[cond_comb]] <- c(sub_groups[[cond_comb]], sub)}
+        }
+
+
+      }
+    }
+    # remove Nans
+    sub_groups <- lapply(sub_groups, function(x) x[!is.na(x)])
+
+    # --------------------------------- #
+    # 4. GET RATIOS AND NEW Ns
+    combinations$ratio <- sapply(sub_groups,function(x) length(x)/get_n(final_data, simvar))
+    combinations$new_n <- sapply(combinations$ratio, function(x) n_want*x)
+
+    # round to integer while keeping sum:
+    y <- floor(combinations$new_n)
+    indices <- tail(order(combinations$new_n-y), round(n_want - sum(y)))
+    y[indices] <- y[indices] + 1
+    combinations$new_n <- y
+
+    # --------------------------------- #
+    # 5. RANDOMLY SELECT SUBJECTS FROM EVERY GROUP
+    keep <- c()
+    for (group in 1:length(sub_groups)){
+      keep <- c(keep, sample(sub_groups[[group]], combinations$new_n[group]))
+    }
+
+
+  } else {
+
+    # ------------------------- #
+    # WITHIN DESIGNS
+    # ------------------------- #
+
+    # if no between variables: just select random ones! Wish everything would be this easy
+    keep <- sample(1:get_n(final_data, simvar), n_want)
+
+  } # end if else
+
+  keep # return value
+} # end function
+
+
+
+
+

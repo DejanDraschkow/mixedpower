@@ -325,7 +325,7 @@ simulateDataset <- function(n_want, data, model, simvar, use_u = F){
   #--> simvar needs to be numeric for that, so it needs to be converted temporarly
 
   # select which subjects to keep
-  simvar_keep <- sample(1:get_n(final_data, simvar), n_want)
+  simvar_keep <- keep_balance(final_data, simvar, fixed_effects, n_want)
 
   # check if it is a factor
   if( is.numeric(final_data[[simvar]]) == F) {
@@ -335,7 +335,7 @@ simulateDataset <- function(n_want, data, model, simvar, use_u = F){
 
     # now do STEP 3:
     final_data <- final_data[is.element(final_data[[simvar]], simvar_keep),]
-    #final_data <- final_data[final_data[[simvar]] <= n_want,]
+    #final_data <- final_data[final_data[[simvar]] <= n_want,] # old solution
 
     # re-convert to factor
     final_data[[simvar]] <- factor(final_data[[simvar]])
@@ -343,14 +343,9 @@ simulateDataset <- function(n_want, data, model, simvar, use_u = F){
     # if not: just subset final data to correct n
   } else {
     final_data <- final_data[is.element(final_data[[simvar]], simvar_keep),]
-    #final_data <- final_data[final_data[[simvar]] <= n_want,]
+    #final_data <- final_data[final_data[[simvar]] <= n_want,] # old solution
   }# end if
 
-  # now do STEP 3:
-  #final_data <- final_data[final_data[[simvar]] <= n_want,]
-
-  # get back to old version
-  #final_data[[simvar]] <- store_old[1:nrow(final_data)]
 
   # return final_data
   final_data

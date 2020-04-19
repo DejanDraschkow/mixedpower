@@ -4,7 +4,7 @@
 \alias{simulateDataset}
 \title{Simulate a new data set}
 \usage{
-simulateDataset(n_want, data, model, simvar)
+simulateDataset(n_want, data, model, simvar, use_u = F)
 }
 \arguments{
 \item{n_want}{integer: how many subjects should the new data set include?}
