@@ -425,7 +425,8 @@ keep_balance <- function(final_data, simvar, fixed_effects, n_want){
     # ------------------------- #
 
     # if no between variables: just select random ones! Wish everything would be this easy
-    keep <- sample(1:get_n(final_data, simvar), n_want)
+    # keep <- sample(1:get_n(final_data, simvar), n_want)
+    keep <- sample(unique(final_data[[simvar]]), n_want)
 
   } # end if else
 
