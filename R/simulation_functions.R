@@ -298,11 +298,11 @@ simulateDataset <- function(n_want, data, model, simvar, fixed_effects, use_u = 
       if( is.numeric(final_data[[simvar]]) == F) {
         # do step 1.
 
-        new_names <- as.numeric(new_part[[simvar]]) + (i-1)*n_now
+        new_names <- as.numeric(as.character(new_part[[simvar]])) + (i-1)*n_now
         new_part[[simvar]] <- new_names
 
         # re-convert simvar to a factor
-        new_part[[simvar]] <- factor(new_part[[simvar]])
+        new_part[[simvar]] <- as.factor(new_part[[simvar]])
       } else {
 
         # do step 1.
@@ -333,7 +333,7 @@ simulateDataset <- function(n_want, data, model, simvar, fixed_effects, use_u = 
   # check if it is a factor
   if( is.numeric(final_data[[simvar]]) == F) {
     # 2. convert  to numeric
-    final_data[[simvar]] <- as.numeric(final_data[[simvar]])
+    final_data[[simvar]] <- as.numeric(as.character(final_data[[simvar]]))
 
 
     # now do STEP 3:
@@ -341,7 +341,7 @@ simulateDataset <- function(n_want, data, model, simvar, fixed_effects, use_u = 
     #final_data <- final_data[final_data[[simvar]] <= n_want,] # old solution
 
     # re-convert to factor
-    final_data[[simvar]] <- factor(final_data[[simvar]])
+    final_data[[simvar]] <- as.factor(final_data[[simvar]])
 
     # if not: just subset final data to correct n
   } else {
