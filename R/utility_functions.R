@@ -399,6 +399,7 @@ keep_balance <- function(final_data, simvar, fixed_effects, n_want){
     # remove Nans
     sub_groups <- lapply(sub_groups, function(x) x[!is.na(x)])
 
+
     # --------------------------------- #
     # 4. GET RATIOS AND NEW Ns
     combinations$ratio <- sapply(sub_groups,function(x) length(x)/get_n(final_data, simvar))
@@ -425,7 +426,6 @@ keep_balance <- function(final_data, simvar, fixed_effects, n_want){
     # ------------------------- #
 
     # if no between variables: just select random ones! Wish everything would be this easy
-    # keep <- sample(1:get_n(final_data, simvar), n_want)
     keep <- sample(unique(final_data[[simvar]]), n_want)
 
   } # end if else
@@ -433,6 +433,89 @@ keep_balance <- function(final_data, simvar, fixed_effects, n_want){
   keep # return value
 } # end function
 
+
+# ------------------------------- check_input ---------------------------------#
+#' Function trunning the actual power simulation
+#'
+#' \code{check_input()} checks if inout handed to simulation is correct.
+#' Returns error messages.
+#'
+#' @param model lme4 model: mixed model of interest
+#' @param data data frame: pilot data that fits the mixed model of interest
+#' @param simvar charackter element: name of the variable that contains the
+#' subject??s number
+#' in data
+#' @param fixed_effects vector of character elements: names of variables that
+#'  are used as fixed effects in
+#' model emp
+#' @param critical_value integer: z/t value to test if a given fixed effect
+#' is significant
+#' @param sampe_sizes vector of integers: sample sizes you want to test power
+#'of
+#' @param n_sim integer: number of simulations to run
+#' @param SESOI Smallest effect of interst
+#' @param R2 logical value: indicating if a R2 simulation should be run
+#' @param R2var character: name of second random effect we want to vary
+#' @param R2level integer: number of levels for R2var. Right now, the second
+check_input <- function(model, data, fixed_effects, simvar,
+                        steps, critical_value, n_sim,
+                        SESOI, R2, R2var, R2level){
+
+
+  # -------- simvar ---------- #
+  if (is.numeric(data[[simvar]]) == F){
+    stop('"simvar" needs to be numeric. Consider creating a numeric dummy variable.')
+  }
+
+  # make sure that simvar is also continous
+  data[[simvar]] <- as.numeric(as.factor(data[[simvar]]))
+
+  # -------- steps ---------- #
+  if(is.numeric(steps) == F | length(steps) < 1){
+    stop('"steps" needs to be numeric and contain at least one value')
+  }
+
+  # --------- fixed effects ------- #
+  if (is.character(fixed_effects) == F) {
+    stop('"fixed_effects" need to be handed to the simulation in character format')
+  }
+
+  for(col in fixed_effects){
+    if(col %in% colnames(data) == F){
+      stop(paste('The fixed effect "',col, '"', " does not exist in the data frame handed to the simulation", sep = ""))
+    }
+  }
+
+  # --------- critical value ----- #
+  if (is.numeric(critical_value) == F){ stop('"critical_value" needs to be numeric.')}
+
+  if (length(critical_value) != 1
+      & length(critical_value) != length(row.names(summary(model)$coefficients)[-1])){
+    stop('"critical_value" needs to be of length 1 or contain as many values as effects in the model (including interactions).')
+  }
+
+  # --------- critical value ----- #
+  if(SESOI != F
+     & length(SESOI) != length(row.names(summary(model)$coefficients)[-1])){
+    stop('"SESOI" needs to contain as many values as effects in the model (including interactions).')
+  }
+
+  # --------- nsim ----------- #
+  if(n_sim < 2 | is.numeric(n_sim) == F){
+    stop('"n_sim" needs to be numeric and be greater than 1.')
+  }
+
+  # --------- R2 ----------- #
+  if(R2 == T){
+    if (is.numeric(data[[R2var]]) == F){
+      stop('"R2var" needs to be numeric. Consider creating a numeric dummy variable.')}
+
+    if(is.numeric(R2level) == F | length(R2level) != 1){
+      stop('"R2level" needs to be numeric and of length 1. Simulations for multiple R2levels are currently not supported.')
+    }
+  }
+
+}
 
 
 

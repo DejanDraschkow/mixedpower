@@ -38,6 +38,12 @@ mixedpower <- function(model, data, fixed_effects, simvar,
                        steps, critical_value, n_sim = 1000,
                        SESOI = F, databased = T){
 
+  # check input and return potential error messages
+  R2 <- F
+  check_input(model, data, fixed_effects, simvar,
+              steps, critical_value, n_sim,
+              SESOI, R2, R2var, R2level)
+
   # keep this so power_simulation function is compatible with mixedpower1 and mixedpower
   confidence_level <- 0.68
 
@@ -132,8 +138,15 @@ R2power <- function(model, data, fixed_effects, simvar,
                     steps, R2var, R2level, critical_value,
                     n_sim = 1000, SESOI = F, databased = T){
 
+  # check input and return potential error messages
+  R2 <- T
+  check_input(model, data, fixed_effects, simvar,
+              steps, critical_value, n_sim,
+              SESOI, R2, R2var, R2level)
+
   # keep this so power_simulation function is compatible with mixedpower1 and mixedpower
   confidence_level <- 0.68
+
 
   #### This function combines the whole power simulation process ###
 
