@@ -156,6 +156,8 @@ power_simulation <- function(model, data, simvar, fixed_effects,
                                      # ----- simulate and update model to R2 level ---- #
                                      # simulate dataset:
 
+                                     model_final@beta <- model_for_simulation@beta
+
 
                                      sim_data2 <- simulateDataset(n_want = R2level,
                                                                  final_dataset, model_final,
@@ -177,7 +179,7 @@ power_simulation <- function(model, data, simvar, fixed_effects,
                                      model_R2_final <- update(model, data = sim_data2)
 
                                      # keep beta coeficcients from first simulation
-                                     model_R2_final@beta <- model_final@beta
+                                     #model_R2_final@beta <- model_final@beta
 
                                    }
 
