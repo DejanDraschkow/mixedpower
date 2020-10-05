@@ -457,6 +457,7 @@ keep_balance <- function(final_data, simvar, fixed_effects, n_want){
 #' @param R2 logical value: indicating if a R2 simulation should be run
 #' @param R2var character: name of second random effect we want to vary
 #' @param R2level integer: number of levels for R2var. Right now, the second
+
 check_input <- function(model, data, fixed_effects, simvar,
                         steps, critical_value, n_sim,
                         SESOI, R2, R2var, R2level){
@@ -510,11 +511,14 @@ check_input <- function(model, data, fixed_effects, simvar,
     if (is.numeric(data[[R2var]]) == F){
       stop('"R2var" needs to be numeric. Consider creating a numeric dummy variable.')}
 
+    data[[R2var]] <- as.numeric(as.factor(data[[R2var]]))
+
     if(is.numeric(R2level) == F | length(R2level) != 1){
       stop('"R2level" needs to be numeric and of length 1. Simulations for multiple R2levels are currently not supported.')
     }
   }
 
+  data # return modified data
 }
 
 
