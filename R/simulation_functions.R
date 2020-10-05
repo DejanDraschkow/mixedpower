@@ -210,7 +210,7 @@ power_simulation <- function(model, data, simvar, fixed_effects,
     ## compute power!
     # margin = 2 --> apply FUN on columns
     # --> vector withs names
-    print(paste("Simulations for step ", n, " are based on ", length(store_simulations), " successful single runs"))
+    print(paste("Simulations for step ", n, " are based on ", length(store_simulations)/n_row, " successful single runs"))
     power_values_n <- apply(store_simulations, MARGIN = 1,
                             FUN = mean, na.rm = T)
 
