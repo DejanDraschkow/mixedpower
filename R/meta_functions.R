@@ -40,7 +40,7 @@ mixedpower <- function(model, data, fixed_effects, simvar,
 
   # check input and return potential error messages
   R2 <- F
-  check_input(model, data, fixed_effects, simvar,
+  data <- check_input(model, data, fixed_effects, simvar,
               steps, critical_value, n_sim,
               SESOI, R2, R2var, R2level)
 
@@ -140,7 +140,7 @@ R2power <- function(model, data, fixed_effects, simvar,
 
   # check input and return potential error messages
   R2 <- T
-  check_input(model, data, fixed_effects, simvar,
+  data <- check_input(model, data, fixed_effects, simvar,
               steps, critical_value, n_sim,
               SESOI, R2, R2var, R2level)
 
