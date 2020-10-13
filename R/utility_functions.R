@@ -349,13 +349,20 @@ keep_balance <- function(final_data, simvar, fixed_effects, n_want){
   between <- c()
   for(column in fixed_effects){
 
-    # go through subjects and check if subjects: only one value per subject per condition --> between
+    # go through subjects/simvar and check if subjects: only one value per subject per condition --> between
     for (sub in unique(final_data[[simvar]])){
       add <- ifelse(length(unique(final_data[final_data[[simvar]] == sub,][[column]])) == 1, T, F)}
 
     # store between variables
-    between <- c(between, if(add == T){column})
+    if(add== T){
+      final_data[[column]] <- as.factor(final_data[[column]]) # make sure all between variables ar factor
+      between <- c(between, column)
+    }
+
   }
+
+  # rewrite all between-variables into factor:
+
 
   # ------------------------- #
   # BETWEEN DESIGNS
