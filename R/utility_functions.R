@@ -502,9 +502,9 @@ check_input <- function(model, data, fixed_effects, simvar,
     stop('"critical_value" needs to be of length 1 or contain as many values as effects in the model (including interactions).')
   }
 
-  # --------- critical value ----- #
+  # --------- SESOI---- ----- #
   if(SESOI != F
-     & length(SESOI) != length(row.names(summary(model)$coefficients)[-1])){
+     & length(SESOI) != length(row.names(summary(model)$coefficients))){
     stop('"SESOI" needs to contain as many values as effects in the model (including interactions).')
   }
 
