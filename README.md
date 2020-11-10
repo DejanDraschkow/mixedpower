@@ -21,7 +21,7 @@ Details to functions included in mixedpower can be found in the [mixedpower docu
 
 ### 3. Open Notebooks
 
-FInd example analyses and supporting information in the following Open [Notebooks](https://lkumle.github.io/power_notebooks/). 
+FInd example analyses and supporting information in the following [Open Notebooks](https://lkumle.github.io/power_notebooks/). 
 
 ##
 This library is citable under:
