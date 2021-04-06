@@ -24,10 +24,9 @@ Details to functions included in mixedpower can be found in the [mixedpower docu
 FInd example analyses and supporting information in the following [Open Notebooks](https://lkumle.github.io/power_notebooks/). 
 
 ##
-This library is citable under:
+If you use the library, please cite:
 
-Kumle, L., Võ, M. L-H.., & Draschkow, D. (2018). Mixedpower: a library for estimating simulation-based power for mixed models in R. https://doi.org/10.5281/zenodo.1341047
-
+Kumle, L., Võ, M. L., & Draschkow, D. (in press). Estimating power in (generalized) linear mixed models: an open introduction and tutorial in R. *Behavior Research Methods*. doi:10.3758/s13428-021-01546-0
 
 :hatched_chick:
    
