@@ -26,7 +26,7 @@ FInd example analyses and supporting information in the following [Open Notebook
 ##
 If you use the library, please cite:
 
-Kumle, L., Võ, M. L., & Draschkow, D. (in press). Estimating power in (generalized) linear mixed models: an open introduction and tutorial in R. *Behavior Research Methods*. doi:10.3758/s13428-021-01546-0
+Kumle, L., Võ, M. L., & Draschkow, D. (2021). Estimating power in (generalized) linear mixed models: an open introduction and tutorial in R. *Behav Res*. doi:10.3758/s13428-021-01546-0
 
 :hatched_chick:
    
