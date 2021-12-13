@@ -23,6 +23,10 @@ Details to functions included in mixedpower can be found in the [mixedpower docu
 
 Find example analyses and supporting information in the following [Open Notebooks](https://lkumle.github.io/power_notebooks/) or the accompanying [tutorial paper](https://doi.org/10.3758/s13428-021-01546-0).
 
+### 4. FAQ
+
+Common error messages and solutions can be found in the mixedpower [FAQ](https://lkumle.github.io/power_notebooks/intro/FAQ_mixedpower.pdf). 
+
 ##
 If you use the library, please cite:
 
