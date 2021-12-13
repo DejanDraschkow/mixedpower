@@ -71,7 +71,7 @@ mixedpower <- function(model, data, fixed_effects, simvar,
   } # end if databased
 
   # 2. SESOI
-  if (SESOI != F){
+  suppressWarnings(if (SESOI != F){
 
     # change beta coeficients to SESOI values
     model@beta <- SESOI
@@ -86,7 +86,7 @@ mixedpower <- function(model, data, fixed_effects, simvar,
     SESOI_power_values["effect"] <- row.names(SESOI_power_values)
     output[[i]] <- SESOI_power_values
 
-  } # end if rnorm
+  }) # end SESOI
   # ------------------------ #
 
   # prepare storing final results

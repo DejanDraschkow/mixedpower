@@ -503,10 +503,10 @@ check_input <- function(model, data, fixed_effects, simvar,
   }
 
   # --------- SESOI---- ----- #
-  if(SESOI != F
+  suppressWarnings(if(SESOI != F
      & length(SESOI) != length(row.names(summary(model)$coefficients))){
     stop('"SESOI" needs to contain as many values as effects in the model (including interactions).')
-  }
+  })
 
   # --------- nsim ----------- #
   if(n_sim < 2 | is.numeric(n_sim) == F){
