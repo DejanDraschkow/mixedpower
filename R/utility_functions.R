@@ -503,7 +503,7 @@ check_input <- function(model, data, fixed_effects, simvar,
   }
 
   # --------- SESOI---- ----- #
-  suppressWarnings(if(SESOI != F
+  suppressWarnings(if(!is.logical(SESOI)
      & length(SESOI) != length(row.names(summary(model)$coefficients))){
     stop('"SESOI" needs to contain as many values as effects in the model (including interactions).')
   })
