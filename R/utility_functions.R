@@ -375,7 +375,7 @@ keep_balance <- function(final_data, simvar, fixed_effects, n_want){
     # --> get overview which subject is in which combination
 
     # get all combinations of all levels for all between subject variables
-    combinations <- expand.grid(sapply(subset(final_data, select = between), levels))
+    combinations <- expand.grid(lapply(subset(final_data, select = between), levels))
 
     # --------------------------------- #
     # 3. CHECK WHICH SUBJECTS ARE IN WHICH COMBINATION
