@@ -36,7 +36,7 @@
 #' @export
 mixedpower <- function(model, data, fixed_effects, simvar,
                        steps, critical_value, n_sim = 1000,
-                       SESOI = F, databased = T){
+                       SESOI = F, databased = T, maxCores = NULL){
 
   # check input and return potential error messages
   R2 <- F
@@ -53,13 +53,20 @@ mixedpower <- function(model, data, fixed_effects, simvar,
   output <- list()
   i <- 1
 
+  ## Added feature: allow to specify maximum number of cores
+  if(is.null(maxCores)){
+    nCores <-  parallel::detectCores()[1] - 1
+  }else{
+    nCores <- maxCores
+  }
+
   # ------------------------ #
   # 1. databased
   if (databased == T){
     databased_power_values <- power_simulation(model, data, simvar, fixed_effects,
                                                 critical_value, steps, n_sim, confidence_level,
                                                 safeguard = F, rnorm = F,
-                                                R2 = F, R2var = 0, R2level = 0) # assign those parameters anyways to avoid crashing
+                                                R2 = F, R2var = 0, R2level = 0, nCores) # assign those parameters anyways to avoid crashing
 
     # store output
     databased_power_values["mode"] <- "databased"
@@ -80,7 +87,7 @@ mixedpower <- function(model, data, fixed_effects, simvar,
     SESOI_power_values <- power_simulation(model, data, simvar, fixed_effects,
                                            critical_value, steps, n_sim, confidence_level,
                                            safeguard = F, rnorm = F,
-                                           R2 = F, R2var = 0, R2level = 0) # assign those parameters anyways to avoid crashing
+                                           R2 = F, R2var = 0, R2level = 0, nCores) # assign those parameters anyways to avoid crashing
 
     SESOI_power_values["mode"] <- "SESOI"
     SESOI_power_values["effect"] <- row.names(SESOI_power_values)
@@ -136,7 +143,7 @@ mixedpower <- function(model, data, fixed_effects, simvar,
 #' @export
 R2power <- function(model, data, fixed_effects, simvar,
                     steps, R2var, R2level, critical_value,
-                    n_sim = 1000, SESOI = F, databased = T){
+                    n_sim = 1000, SESOI = F, databased = T, maxCores = NULL){
 
   # check input and return potential error messages
   R2 <- T
@@ -154,13 +161,20 @@ R2power <- function(model, data, fixed_effects, simvar,
   output <- list()
   i <- 1
 
+  ## Added feature: allow to specify maximum number of cores
+  if(is.null(maxCores)){
+    nCores <-  parallel::detectCores()[1] - 1
+  }else{
+    nCores <- maxCores
+  }
+
   # ------------------------ #
   # 1. databased
   if (databased == T){
     databased_power_values <- power_simulation(model, data, simvar, fixed_effects,
                                                critical_value, steps, n_sim, confidence_level,
                                                safeguard = F, rnorm = F,
-                                               R2 = T, R2var, R2level)
+                                               R2 = T, R2var, R2level, nCores)
 
     # store output
     databased_power_values["mode"] <- "databased"
@@ -181,7 +195,7 @@ R2power <- function(model, data, fixed_effects, simvar,
     SESOI_power_values <- power_simulation(model, data, simvar, fixed_effects,
                                            critical_value, steps, n_sim, confidence_level,
                                            safeguard = F, rnorm = F,
-                                           R2 = T, R2var, R2level)
+                                           R2 = T, R2var, R2level, nCores)
 
     SESOI_power_values["mode"] <- "SESOI"
     SESOI_power_values["effect"] <- row.names(SESOI_power_values)

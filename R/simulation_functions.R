@@ -33,7 +33,7 @@
 power_simulation <- function(model, data, simvar, fixed_effects,
                              critical_value, steps, n_sim, confidence_level,
                              safeguard = F, rnorm = F,
-                             R2 = F, R2var, R2level){
+                             R2 = F, R2var, R2level, nCores){
 
 
 
@@ -43,9 +43,12 @@ power_simulation <- function(model, data, simvar, fixed_effects,
 
 
   # PREPARE TO RUN IN PARALLEL
-  cores= parallel::detectCores()
-  cl <- parallel::makeCluster(cores[1]-1) #not to overload your computer
+  cores = parallel::detectCores()
+  cl <- parallel::makeCluster(nCores) #not to overload your computer
   doParallel::registerDoParallel(cl)
+
+  print("Simulation running on:")
+  print(cl)
 
   #------------------------------------#
   #------------------------------------#
@@ -333,7 +336,10 @@ simulateDataset <- function(n_want, data, model, simvar, fixed_effects, use_u = 
   #--> simvar needs to be numeric for that, so it needs to be converted temporarly
 
   # select which subjects to keep
+
   simvar_keep <- keep_balance(final_data, simvar, fixed_effects, n_want)
+
+
 
   # check if it is a factor
   if( is.numeric(final_data[[simvar]]) == F) {
