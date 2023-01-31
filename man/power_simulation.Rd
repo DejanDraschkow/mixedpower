@@ -17,7 +17,8 @@ power_simulation(
   rnorm = F,
   R2 = F,
   R2var,
-  R2level
+  R2level,
+  nCores
 )
 }
 \arguments{
@@ -51,6 +52,8 @@ shoul be run}
 \item{R2level}{integer: number of levels for R2var. Right now, the second
 random effect can only be changed to a fixed value and not be varied like
 simvar}
+
+\item{nCores}{number of cores to use in simulation process.}
 
 \item{sampe_sizes}{vector of integers: sample sizes you want to test power
 of}

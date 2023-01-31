@@ -15,7 +15,8 @@ R2power(
   critical_value,
   n_sim = 1000,
   SESOI = F,
-  databased = T
+  databased = T,
+  maxCores = NULL
 )
 }
 \arguments{
@@ -47,7 +48,9 @@ is significant}
 \item{SESOI}{vector with floats´indicating the desired SESOIs.
 If FALSE, no SESOI simulation is run.}
 
-\item{databased}{logical value: indicates whether databased power simulation}
+\item{databased}{logical value: indicates whether databased power simulation
+#' @param maxCores allows to specify the maximum number of cores to be used in
+simulation process. If unspecified, R2power will run simulations on all but one cores.}
 }
 \value{
 A modified mixed model

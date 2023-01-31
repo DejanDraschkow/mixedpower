@@ -27,6 +27,7 @@
 #' @param R2level integer: number of levels for R2var. Right now, the second
 #' random effect can only be changed to a fixed value and not be varied like
 #' simvar
+#' @param nCores number of cores to use in simulation process.
 #' @return A modified mixed model
 #'
 #' @export

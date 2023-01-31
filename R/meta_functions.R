@@ -31,6 +31,8 @@
 #' If FALSE, no SESOI simulation is run.
 #' @param databased logical value: indicates whether databased power simulation
 #' shoul be run
+#' @param maxCores allows to specify the maximum number of cores to be used in
+#' simulation process. If unspecified, mixedpower will run simulations on all but one cores.
 #' @return A modified mixed model
 #'
 #' @export
@@ -137,7 +139,8 @@ mixedpower <- function(model, data, fixed_effects, simvar,
 #' @param SESOI vector with floats´indicating the desired SESOIs.
 #' If FALSE, no SESOI simulation is run.
 #' @param databased logical value: indicates whether databased power simulation
-
+#' #' @param maxCores allows to specify the maximum number of cores to be used in
+#' simulation process. If unspecified, R2power will run simulations on all but one cores.
 #' @return A modified mixed model
 #'
 #' @export

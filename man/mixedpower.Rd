@@ -13,7 +13,8 @@ mixedpower(
   critical_value,
   n_sim = 1000,
   SESOI = F,
-  databased = T
+  databased = T,
+  maxCores = NULL
 )
 }
 \arguments{
@@ -42,6 +43,9 @@ If FALSE, no SESOI simulation is run.}
 
 \item{databased}{logical value: indicates whether databased power simulation
 shoul be run}
+
+\item{maxCores}{allows to specify the maximum number of cores to be used in
+simulation process. If unspecified, mixedpower will run simulations on all but one cores.}
 }
 \value{
 A modified mixed model
