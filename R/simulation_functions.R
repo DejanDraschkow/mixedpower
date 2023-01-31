@@ -44,8 +44,7 @@ power_simulation <- function(model, data, simvar, fixed_effects,
 
 
   # PREPARE TO RUN IN PARALLEL
-  cores = parallel::detectCores()
-  cl <- parallel::makeCluster(nCores) #not to overload your computer
+  cl <- parallel::makeCluster(nCores) # set up specified number of cores
   doParallel::registerDoParallel(cl)
 
   print("Simulation running on:")

@@ -166,7 +166,7 @@ R2power <- function(model, data, fixed_effects, simvar,
 
   ## Added feature: allow to specify maximum number of cores
   if(is.null(maxCores)){
-    nCores <-  parallel::detectCores()[1] - 1
+    nCores <-  parallel::detectCores()[1] - 1 # use all but one core if unspecified
   }else{
     nCores <- maxCores
   }
